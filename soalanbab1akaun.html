@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuiz Akaun Tingkatan 5</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            background-color: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; 
+        }
+
+        .options li:hover {
+            background-color: #e2e6ea;
+            transform: scale(1.05);
+        }
+
+        .options li.selected {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+            background-color: #d4edda;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #c3e6cb;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .incorrect-answers {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .incorrect-answers h3 {
+            margin-top: 0;
+        }
+
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .settings-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 2;
+            border-radius: 8px;
+            width: 300px;
+            cursor: move;
+        }
+
+        .popup h3 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .popup select, .popup input[type="file"] {
+            padding: 5px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="settings-btn" onclick="openSettings()">⚙ Tetapan</button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="settingsPopup" onmousedown="startDrag(event)">
+        <h3>Tetapan</h3>
+        <label for="fontSize">Saiz Font:</label>
+        <select id="fontSize">
+            <option value="10px">Kecil</option>
+            <option value="18px" selected>Sederhana</option>
+            <option value="30px">Besar</option>
+        </select>
+
+        <label for="bgMusic">Pilih Lagu MP3:</label>
+        <input type="file" id="bgMusic" accept="audio/mp3" onchange="changeBackgroundMusic(event)">
+        <p style="color: red;">Lagu ini masih dalam pemantauan</p>
+
+        <button onclick="applySettings()">Simpan</button>
+        <button onclick="closeSettings()">Tutup</button>
+    </div>
+
+    <div class="quiz-container">
+        <h2>Kuiz Akaun Tingkatan 5</h2>
+        <div id="quiz"></div>
+        <button class="btn" id="nextBtn" onclick="nextQuestion()">Soalan Seterusnya</button>
+        <div class="result" id="result"></div>
+        <div class="incorrect-answers" id="incorrectAnswers"></div>
+    </div>
+
+    <script>
+        const questions = [
+          {
+                question: "Apakah definisi perakaunan?",
+                options: ["Perakaunan ialah proses merekod, mengelas, meringkaskan, melapor, dan menganalisis maklumat kewangan sesuatu entiti untuk tujuan membuat keputusan ekonomi", "Merekod belanja operasi", "Merekod pendapatan bukan operasi", "Merekod liabiliti"],
+                answer: 0
+            },
+            {
+                question: "Apakah tujuan utama penyediaan penyata kewangan?",
+                options: ["Tujuan utama penyediaan penyata kewangan adalah untuk memberikan maklumat kewangan yang relevan dan boleh dipercayai kepada pengguna seperti pemilik, pelabur, dan pihak berkuasa untuk membuat keputusan ekonomi.", "Menyimpan rekod akaun sahaja", "Membantu dalam penyimpanan stok", "Merekod perbelanjaan harian"],
+                answer: 0
+            },
+            // Tambah soalan lain di sini
+            {
+                question: "Apakah definisi perakaunan?",
+                options: ["Perakaunan ialah proses merekod, mengelas, meringkaskan, melapor, dan menganalisis maklumat kewangan sesuatu entiti untuk tujuan membuat keputusan ekonomi", "Merekod belanja operasi", "Merekod pendapatan bukan operasi", "Merekod liabiliti"],
+                answer: 0
+            }
+            
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let audio = new Audio();
+
+        function loadQuestion(index) {
+            const quizDiv = document.getElementById("quiz");
+            quizDiv.innerHTML = "";
+            const q = questions[index];
+
+            let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
+            q.options.forEach((option, i) => {
+                questionHTML += `<li onclick="selectAnswer(${i})">${option}</li>`;
+            });
+            questionHTML += `</ul>`;
+            quizDiv.innerHTML = questionHTML;
+
+            const nextBtn = document.getElementById("nextBtn");
+            if (index === questions.length - 1) {
+                nextBtn.textContent = "Semak Jawapan";
+                nextBtn.setAttribute("onclick", "checkAnswers()");
+            } else {
+                nextBtn.textContent = "Soalan Seterusnya";
+                nextBtn.setAttribute("onclick", "nextQuestion()");
+            }
+        }
+
+        function selectAnswer(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            const options = document.querySelectorAll(".options li");
+            options.forEach(option => option.classList.remove("selected"));
+            options[optionIndex].classList.add("selected");
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert("Sila pilih jawapan terlebih dahulu!");
+                return;
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion(currentQuestionIndex);
+            } else {
+                showResult();
+            }
+        }
+
+        function checkAnswers() {
+            showResult();
+        }
+
+        function showResult() {
+            document.getElementById("quiz").style.display = 'none';
+            document.getElementById("nextBtn").style.display = 'none';
+
+            let score = 0;
+            let incorrectAnswersHTML = "";
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.answer) {
+                    score++;
+                } else {
+                    incorrectAnswersHTML += `<p><strong>Soalan ${index + 1}:</strong> <strong>${q.question}</strong><br>Jawapan yang betul: ${q.options[q.answer]}<br>Jawapan anda: ${q.options[userAnswers[index]]}</p>`;
+                }
+            });
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `Markah: ${score} / ${questions.length}`;
+            resultDiv.style.display = 'block';
+
+            if (incorrectAnswersHTML) {
+                document.getElementById("incorrectAnswers").innerHTML = `<h3>Jawapan Yang Salah:</h3>${incorrectAnswersHTML}`;
+            } else {
+                document.getElementById("incorrectAnswers").innerHTML = "";
+            }
+        }
+
+        function changeBackgroundMusic(event) {
+    const file = event.target.files[0];
+    if (file && file.type.includes("audio/mp3")) {
+        const objectURL = URL.createObjectURL(file);
+        audio.src = objectURL;
+        audio.loop = true;
+
+        // Pastikan audio dapat dimainkan
+        audio.play().catch(function(error) {
+            alert("Gagal memainkan audio: " + error.message);
+        });
+    } else {
+        alert("Sila pilih fail MP3.");
+    }
+}
+
+
+        window.onload = loadQuestion(currentQuestionIndex);
+
+        function openSettings() {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("settingsPopup").style.display = "block";
+        }
+
+        function closeSettings() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("settingsPopup").style.display = "none";
+        }
+
+        function applySettings() {
+            const fontSize = document.getElementById("fontSize").value;
+            document.body.style.fontSize = fontSize;
+            closeSettings();
+        }
+
+        function startDrag(e) {
+            const popup = document.getElementById("settingsPopup");
+            let offsetX = e.clientX - popup.getBoundingClientRect().left;
+            let offsetY = e.clientY - popup.getBoundingClientRect().top;
+
+            function dragMove(e) {
+                popup.style.left = (e.clientX - offsetX) + 'px';
+                popup.style.top = (e.clientY - offsetY) + 'px';
+            }
+
+            function dragEnd() {
+                document.removeEventListener('mousemove', dragMove);
+                document.removeEventListener('mouseup', dragEnd);
+            }
+
+            document.addEventListener('mousemove', dragMove);
+            document.addEventListener('mouseup', dragEnd);
+        }
+    </script>
+</body>
+</html>
