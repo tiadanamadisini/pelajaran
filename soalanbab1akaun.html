@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuiz Akaun Tingkatan 5</title>
     <style>
+        /* Gaya CSS untuk paparan kuiz */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #e9ecef;
@@ -176,11 +177,11 @@
     </style>
 </head>
 <body>
-    <button class="settings-btn" onclick="openSettings()">⚙ Setting</button>
+    <button class="settings-btn" onclick="openSettings()">⚙ Tetapan</button>
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="settingsPopup" onmousedown="startDrag(event)">
-        <h3>Setting</h3>
+        <h3>Tetapan</h3>
         <label for="fontSize">Saiz Font:</label>
         <select id="fontSize">
             <option value="10px">Kecil</option>
@@ -190,7 +191,7 @@
 
         <label for="bgMusic">Pilih Lagu MP3:</label>
         <input type="file" id="bgMusic" accept="audio/mp3" onchange="changeBackgroundMusic(event)">
-        <p style="color: red;margin-top: 0;font-size: 12px;">*Lagu ini masih dalam pemantauan</p>
+        <p style="color: red;">Lagu ini masih dalam pemantauan</p>
 
         <button onclick="applySettings()">Simpan</button>
         <button onclick="closeSettings()">Tutup</button>
@@ -207,85 +208,202 @@
     <script>
         const questions = [
         {
-                question: "Apakah definisi perakaunan?",
-                options: ["Perakaunan ialah proses merekod, mengelas, meringkaskan, melapor, dan menganalisis maklumat kewangan sesuatu entiti untuk tujuan membuat keputusan ekonomi", "Merekod belanja operasi", "Merekod pendapatan bukan operasi", "Merekod liabiliti"],
-                answer: 0
-            },
-            {
-                question: "Apakah tujuan utama penyediaan penyata kewangan?​",
-                options: ["Tujuan utama penyediaan penyata kewangan adalah untuk memberikan maklumat kewangan yang relevan dan boleh dipercayai kepada pengguna seperti pemilik, pelabur, dan pihak berkuasa untuk membuat keputusan ekonomi.", "Menyimpan rekod akaun sahaja", "Membantu dalam penyimpanan stok", "Merekod perbelanjaan harian"],
-                answer: 0
-            },
-            {
-                question: "Senaraikan tiga pengguna utama penyata kewangan dan jelaskan keperluan mereka.",
-                options: ["•Pelabur: Memerlukan maklumat untuk menilai prestasi syarikat dan potensi pulangan pelaburan.•Pemiutang: Memerlukan maklumat untuk menilai kebolehan syarikat membayar balik hutang.•Pengurusan: Memerlukan maklumat untuk membuat keputusan operasi dan strategik.", "Pelabur: Memerlukan maklumat tentang akaun semasa syarikat", "Pengurusan: Memerlukan maklumat tentang bil dan hutang", "Pemiutang: Memerlukan maklumat untuk menilai keuntungan syarikat"],
-                answer: 0
-            },
-            {
-                question: "Apakah konsep perakaunan yang memastikan transaksi dicatatkan pada nilai asal tanpa mengira nilai semasa?",
-                options: ["Konsep perakaunan yang dimaksudkan adalah Prinsip Kos, yang menyatakan bahawa aset harus dicatatkan pada kos perolehan asal.", "Konsep kos berterusan", "Konsep perakaunan keuntungan", "Konsep penilaian pasaran"],
-                answer: 0
-            },
-            {
-                question: "Apakah maksud konsep 'usaha berterusan' dalam perakaunan?",
-                options: ["Konsep 'usaha berterusan' (going concern) menganggap bahawa entiti perniagaan akan terus beroperasi untuk tempoh yang tidak terhad, melainkan terdapat bukti yang menunjukkan sebaliknya.", "Perniagaan boleh tutup dalam tempoh setahun", "Perniagaan hanya boleh beroperasi untuk satu tahun", "Perniagaan akan digabungkan dengan syarikat lain"],
-                answer: 0
-            },
-            {
-                question: "Bagaimanakah konsep 'entiti berasingan' mempengaruhi penyediaan penyata kewangan?",
-                options: ["Konsep 'entiti berasingan' memisahkan kewangan peribadi pemilik daripada kewangan perniagaan, memastikan bahawa transaksi peribadi tidak dicampur adukkan dengan transaksi perniagaan dalam penyata kewangan.", "Kewangan perniagaan dan peribadi digabungkan", "Perniagaan boleh menggunakan wang peribadi untuk perbelanjaan syarikat", "Perbelanjaan perniagaan boleh dimasukkan ke dalam akaun peribadi"],
-                answer: 0
-            },
-            {
-                question: "Apakah perbezaan antara aset lancar dan aset tidak lancar?",
-                options: ["Aset lancar adalah aset yang dijangka akan ditukar menjadi tunai, dijual, atau digunakan dalam operasi perniagaan dalam tempoh satu tahun, seperti tunai, inventori, dan akaun belum terima. Aset tidak lancar adalah aset yang tidak dijangka akan ditukar menjadi tunai atau digunakan dalam tempoh satu tahun, seperti hartanah, kilang, dan peralatan.", "Aset lancar hanya merujuk kepada tunai dan akaun belum terima", "Aset tidak lancar adalah aset yang boleh dijual dalam tempoh satu tahun", "Aset lancar adalah aset yang tidak memerlukan penilaian"],
-                answer: 0
-            },
-            {
-                question: "Apakah maksud 'liabiliti' dalam perakaunan?",
-                options: ["'Liabiliti' merujuk kepada tanggungjawab kewangan atau hutang yang perlu dibayar oleh perniagaan kepada pihak luar, seperti akaun belum bayar, pinjaman, dan obligasi kewangan lain.", "Liabiliti adalah keuntungan bersih perniagaan", "Liabiliti adalah aset yang belum diterima", "Liabiliti adalah keuntungan yang belum dituntut"],
-                answer: 0
-            },
-            {
-                question: "Jelaskan perbezaan antara pendapatan dan hasil dalam perakaunan.",
-                options: ["Pendapatan merujuk kepada aliran masuk ekonomi yang diterima oleh perniagaan daripada aktiviti utamanya, seperti jualan barang atau perkhidmatan. Hasil merujuk kepada jumlah wang yang diterima daripada penjualan barang atau perkhidmatan sebelum ditolak kos atau perbelanjaan.", "Pendapatan adalah jumlah wang yang diterima selepas potongan kos", "Hasil adalah jumlah wang selepas cukai", "Pendapatan hanya merujuk kepada keuntungan semata-mata"],
-                answer: 0
-            },
-            {
-                question: "Apakah peranan 'imbangan duga' dalam proses perakaunan?",
-                options: ["Imbangan duga adalah senarai semua baki akaun dalam lejar pada suatu tarikh tertentu. Ia digunakan untuk memastikan bahawa jumlah debit adalah sama dengan jumlah kredit, menandakan bahawa rekod perakaunan adalah seimbang dan bebas daripada kesilapan matematik.", "Imbangan duga adalah laporan kewangan tahunan", "Imbangan duga digunakan untuk memeriksa keuntungan syarikat", "Imbangan duga digunakan untuk menilai aliran tunai syarikat"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Nisbah Semasa?",
-                options: ["Nisbah Semasa = Aset Semasa / Liabiliti Semasa", "Nisbah Semasa = Liabiliti Semasa / Aset Semasa", "Nisbah Semasa = Aset Tidak Lancar / Liabiliti Semasa", "Nisbah Semasa = Liabiliti Tidak Lancar / Aset Semasa"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Nisbah Ujian Asid?",
-                options: ["Nisbah Ujian Asid = (Aset Semasa - Inventori) / Liabiliti Semasa", "Nisbah Ujian Asid = Aset Semasa / Liabiliti Semasa", "Nisbah Ujian Asid = Aset Semasa / (Inventori + Liabiliti Semasa)", "Nisbah Ujian Asid = Liabiliti Semasa / Aset Semasa"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Kadar Pusing Ganti Inventori?",
-                options: ["Kadar Pusing Ganti Inventori = Kos Jualan / Inventori Purata", "Kadar Pusing Ganti Inventori = Inventori Purata / Kos Jualan", "Kadar Pusing Ganti Inventori = Kos Jualan / Aset Semasa", "Kadar Pusing Ganti Inventori = Aset Semasa / Kos Jualan"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Margin Untung Kasar?",
-                options: ["Margin Untung Kasar = (Untung Kasar / Jualan) × 100%", "Margin Untung Kasar = Jualan / Untung Kasar", "Margin Untung Kasar = (Jualan / Untung Kasar) × 100%", "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Pulangan Atas Modal (ROCE)?",
-                options: ["ROCE = (Untung Sebelum Cukai / Modal Terlibat) × 100%", "ROCE = (Modal Terlibat / Untung Sebelum Cukai) × 100%", "ROCE = Untung Bersih / Modal Terlibat", "ROCE = Untung Sebelum Cukai / Jualan"],
-                answer: 0
-            },
-            {
-                question: "Apakah formula untuk mengira Tempoh Pembayaran Hutang?",
-                options: ["Tempoh Pembayaran Hutang = (Akaun Belum Bayar / Belian Harian) × 365", "Tempoh Pembayaran Hutang = Belian Harian / Akaun Belum Bayar", "Tempoh Pembayaran Hutang = (Belian Harian / Akaun Belum Bayar) × 365", "Tempoh Pembayaran Hutang = Akaun Belum Bayar / Belian Tahunan"],
-                answer: 0
-            }
+            "question": "Apakah maksud Analisis Penyata Kewangan ",
+            "options": [
+                "Analisis yang dilakukan ke atas butir-butir dalam Akaun Perdagangan dan Untung Rugi dan Penyata Kedudukan Kewangan sesebuah perniagaan.",
+                "Merekod pendapatan bukan operasi",
+                "Merekod liabiliti",
+                "Menyimpan rekod akaun sahaja"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
+        },
+        {
+            "question": "Apakah Tujuan Analisis Penyata Kewangan?",
+            "options": [
+                "Membantu pihak pengurusan menilai prestasi perniagaan dan seterusnya membuat keputusan kewangan perniagaan",
+                "Menyimpan rekod akaun sahaja",
+                "Membantu dalam penyimpanan stok",
+                "Merekod perbelanjaan harian"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
+        },
+        {
+            "question": "Maksud nisbah keberuntungan?",
+            "options": [
+                "Menggukur kecekapan perniagaan mengurus inventori",
+                "pulangan atas modal",
+                "Menggukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                "Keadaan Mampu bayar"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+        },
+        {
+            "question": "Maksud nisbah kecairan?",
+            "options": [
+                "Menggukur kecekapan perniagaan mengurus inventori",
+                "Konsep kos berterusanpulangan atas modal",
+                "Menggukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                "Keadaan Mampu bayar"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+        },
+        {
+            "question": "Apakah maksud nisbah kecekapan?",
+            "options": [
+                "Menggukur kecekapan perniagaan mengurus inventori",
+                "Konsep kos berterusanpulangan atas modal",
+                "Menggukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                "Keupayaan perniagaan mengutip dan membayar hutang"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+        },
+        {
+            "question": "Nisbah kecairan terbahagi kepada 2 iaitu",
+            "options": [
+                "Nisbah semasa , Nisbah ujian asid",
+                "Peratus untung kasar atas kos jualan , peratus untung bersih atas jualan",
+                "kadar ganti pusing inventori , tempoh kutipan hutang",
+                "tempoh pembayaran , tempoh kutipan hutang"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+        },
+        {
+            "question": "Dua jenis perbandingan prestasi perniagaan",
+            "options": [
+                "Antara perniagaan dalam industri yang sama",
+                "Aset lancar hanya merujuk kepada tunai dan akaun belum terima",
+                "Aset tidak lancar adalah aset yang boleh dijual dalam tempoh satu tahun",
+                "Aset lancar adalah aset yang tidak memerlukan penilaian"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 14"
+        },
+        {
+            "question": "Tujuan perbandingan antara perniagaan dalam industri yang sama",
+            "options": [
+                "'Liabiliti' merujuk kepada tanggungjawab kewangan atau hutang yang perlu dibayar oleh perniagaan kepada pihak luar, seperti akaun belum bayar, pinjaman, dan obligasi kewangan lain.Mengetahui kedudukan perniagaan yang lebih baik.",
+                "Liabiliti adalah keuntungan bersih perniagaan",
+                "Liabiliti adalah aset yang belum diterima",
+                "Liabiliti adalah keuntungan yang belum dituntut"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 21"
+        },
+        {
+            "question": "Tujuan Perbandingan Prestasi Perniagaan.",
+            "options": [
+                "Mengetahui Kekuatan dan kelemahan perniagaan.",
+                "Pendapatan adalah jumlah wang yang diterima selepas potongan kos",
+                "Hasil adalah jumlah wang selepas cukai",
+                "Pendapatan hanya merujuk kepada keuntungan semata-mata"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 14"
+        },
+        {
+            "question": "cara meningkatkan prestasi perniagaan",
+            "options": [
+                "Meningkatkan jumlah jualan dengan menambahkan unit keluaran. Jualan boleh ditambah melalui perniagaan dalam talian.",
+                "Imbangan duga adalah laporan kewangan tahunan",
+                "Imbangan duga digunakan untuk memeriksa keuntungan syarikat",
+                "Imbangan duga digunakan untuk menilai aliran tunai syarikat"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 20"
+        },
+        {
+            "question": "Apakah formula untuk mengira Nisbah Semasa?",
+            "options": [
+                "Nisbah Semasa = Aset Semasa / Liabiliti Semasa",
+                "Nisbah Semasa = Liabiliti Semasa / Aset Semasa",
+                "Nisbah Semasa = Aset Tidak Lancar / Liabiliti Semasa",
+                "Nisbah Semasa = Liabiliti Tidak Lancar / Aset Semasa"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
+        },
+        {
+            "question": "Apakah formula untuk mengira Nisbah Ujian Asid?",
+            "options": [
+                "Nisbah Ujian Asid = (Aset Semasa - Inventori) / Liabiliti Semasa",
+                "Nisbah Ujian Asid = Aset Semasa / Liabiliti Semasa",
+                "Nisbah Ujian Asid = Aset Semasa / (Inventori + Liabiliti Semasa)",
+                "Nisbah Ujian Asid = Liabiliti Semasa / Aset Semasa"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 7"
+        },
+        {
+            "question": "Apakah formula untuk mengira Kadar Pusing Ganti Inventori?",
+            "options": [
+                "Kadar Pusing Ganti Inventori = Kos Jualan / Inventori Purata",
+                "Kadar Pusing Ganti Inventori = Inventori Purata / Kos Jualan",
+                "Kadar Pusing Ganti Inventori = Kos Jualan / Aset Semasa",
+                "Kadar Pusing Ganti Inventori = Aset Semasa / Kos Jualan"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 8"
+        },
+        {
+            "question": "Apakah formula untuk mengira Margin Untung Kasar?",
+            "options": [
+                "Margin Untung Kasar = (Untung Kasar / Jualan Bersih) × 100%",
+                "Margin Untung Kasar = Jualan / Untung Kasar",
+                "Margin Untung Kasar = (Untung berih / Jualan Bersih) × 100%",
+                "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
+        },
+        {
+            "question": "Apakah formula untuk mengira Pulangan Atas Modal?",
+            "options": [
+                "Pulangan Atas Modal = (Untung bersih / Modal awal) × 100%",
+                "Pulangan Atas Modal = (Modal Terlibat / Untung Sebelum Cukai) × 100%",
+                "Pulangan Atas Modal = Untung Bersih / Modal Terlibat",
+                "Pulangan Atas Modal = Untung Sebelum Cukai / Jualan"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
+        },
+        {
+            "question": "Apakah formula untuk mengira Tempoh Pembayaran Hutang?",
+            "options": [
+                "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
+                "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
+                "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
+                "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 10"
+        },{
+            "question": "Apakah formula untuk mengira Tempoh kutipan Hutang?",
+            "options": [
+                "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
+                "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
+                "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
+                "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 9"
+        },{
+            "question": "Apakah formula untuk mengira Margin Untung Kasar?",
+            "options": [
+                "Margin Untung Kasar = (Untung berish / Jualan Bersih) × 100%",
+                "Margin Untung Kasar = (Untung Kasar / Jualan Bersih) × 100%",
+                "Margin Untung Kasar = (Jualan / Untung Kasar) × 100%",
+                "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"
+            ],
+            "answer": 0,
+            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
+        }
+        
         ];
 
         let currentQuestionIndex = 0;
@@ -363,7 +481,7 @@
                 if (userAnswers[index] === q.answer) {
                     score++;
                 } else {
-                    incorrectAnswersHTML += `<p><strong>Soalan ${index + 1}:</strong> <strong>${q.question}</strong><br>Jawapan yang betul: ${q.options[q.answer]}<br>Jawapan anda: ${q.options[userAnswers[index]]}</p>`;
+                    incorrectAnswersHTML += `<p><strong>Soalan ${index + 1}:</strong> <strong>${q.question}</strong><br>Jawapan yang betul: ${q.options[q.answer]}<br>Jawapan anda: ${q.options[userAnswers[index]]}</p><p><em>Rujukan: ${q.reference}</em></p>`;
                 }
             });
 
