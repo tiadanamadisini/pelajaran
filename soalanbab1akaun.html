@@ -232,10 +232,10 @@
         {
             "question": "Maksud nisbah keberuntungan?",
             "options": [
-                "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                "Mengukur kemampuan sesebuah perniagaan dalam memperoleh keuntungan",
                 "Mengukur kecekapan perniagaan mengurus inventori",
                 "pulangan atas modal",
-                "Keadaan Mampu bayar"
+                "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran"
             ],
             "answer": 0,
             "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
@@ -399,48 +399,42 @@
         let userAnswers = [];
         let audio = new Audio();
 
-        // Fungsi untuk mengacak pilihan jawapan
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]]; // Tukar elemen
-            }
-        }
+        // Fungsi untuk memuatkan soalan
+function loadQuestion(index) {
+    const quizDiv = document.getElementById("quiz");
+    quizDiv.innerHTML = "";
+    const q = questions[index];
 
-        // Mengubah suai loadQuestion untuk menggunakan fungsi pengacakan
-        function loadQuestion(index) {
-            const quizDiv = document.getElementById("quiz");
-            quizDiv.innerHTML = "";
-            const q = questions[index];
+    // Simpan jawapan betul
+    const correctAnswerIndex = q.answer;
 
-            // Mengacak pilihan jawapan
-            const shuffledOptions = [...q.options];
-            shuffleArray(shuffledOptions);
+    let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
 
-            let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
-            shuffledOptions.forEach((option, i) => {
-                questionHTML += `<li onclick="selectAnswer(${i}, ${shuffledOptions.indexOf(option)})">${option}</li>`;
-            });
-            questionHTML += `</ul>`;
-            quizDiv.innerHTML = questionHTML;
+    // Paparkan pilihan jawapan dalam urutan asal
+    q.options.forEach((option, i) => {
+        questionHTML += `<li onclick="selectAnswer(${i}, ${correctAnswerIndex})">${option}</li>`;
+    });
+    questionHTML += `</ul>`;
+    quizDiv.innerHTML = questionHTML;
 
-            const nextBtn = document.getElementById("nextBtn");
-            if (index === questions.length - 1) {
-                nextBtn.textContent = "Semak Jawapan";
-                nextBtn.setAttribute("onclick", "checkAnswers()");
-            } else {
-                nextBtn.textContent = "Soalan Seterusnya";
-                nextBtn.setAttribute("onclick", "nextQuestion()");
-            }
-        }
+    const nextBtn = document.getElementById("nextBtn");
+    if (index === questions.length - 1) {
+        nextBtn.textContent = "Semak Jawapan";
+        nextBtn.setAttribute("onclick", "checkAnswers()");
+    } else {
+        nextBtn.textContent = "Soalan Seterusnya";
+        nextBtn.setAttribute("onclick", "nextQuestion()");
+    }
+}
 
-        // Mengubah suai selectAnswer untuk menangani pengacakan
-        function selectAnswer(optionIndex, originalIndex) {
-            userAnswers[currentQuestionIndex] = originalIndex;
-            const options = document.querySelectorAll(".options li");
-            options.forEach(option => option.classList.remove("selected"));
-            options[optionIndex].classList.add("selected");
-        }
+// Fungsi untuk memilih jawapan
+function selectAnswer(optionIndex, correctAnswerIndex) {
+    userAnswers[currentQuestionIndex] = optionIndex; // Simpan jawapan pengguna
+    const options = document.querySelectorAll(".options li");
+    options.forEach(option => option.classList.remove("selected"));
+    options[optionIndex].classList.add("selected");
+}
+
 
         function nextQuestion() {
             if (userAnswers[currentQuestionIndex] === undefined) {
