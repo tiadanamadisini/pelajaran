@@ -497,15 +497,17 @@
             document.querySelectorAll('.question, .options li').forEach(el => {
                 el.style.fontSize = fontSize;
             });
-
+        
             const bgMusicInput = document.getElementById('bgMusic');
             if (bgMusicInput.files.length > 0) {
                 audio.src = URL.createObjectURL(bgMusicInput.files[0]);
+                audio.loop = true;  // Menambah fungsi loop
                 audio.play();
             }
-
+        
             closeSettings();
         }
+
 
         // Menyediakan tetapan awal
         loadQuestion(currentQuestionIndex);
