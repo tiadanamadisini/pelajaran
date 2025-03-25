@@ -44,7 +44,7 @@
             padding: 15px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s; 
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .options li:hover {
@@ -206,37 +206,113 @@
 
     <script>
         const questions = [
-          {
+        {
                 question: "Apakah definisi perakaunan?",
                 options: ["Perakaunan ialah proses merekod, mengelas, meringkaskan, melapor, dan menganalisis maklumat kewangan sesuatu entiti untuk tujuan membuat keputusan ekonomi", "Merekod belanja operasi", "Merekod pendapatan bukan operasi", "Merekod liabiliti"],
                 answer: 0
             },
             {
-                question: "Apakah tujuan utama penyediaan penyata kewangan?",
+                question: "Apakah tujuan utama penyediaan penyata kewangan?​",
                 options: ["Tujuan utama penyediaan penyata kewangan adalah untuk memberikan maklumat kewangan yang relevan dan boleh dipercayai kepada pengguna seperti pemilik, pelabur, dan pihak berkuasa untuk membuat keputusan ekonomi.", "Menyimpan rekod akaun sahaja", "Membantu dalam penyimpanan stok", "Merekod perbelanjaan harian"],
                 answer: 0
             },
-            // Tambah soalan lain di sini
             {
-                question: "Apakah definisi perakaunan?",
-                options: ["Perakaunan ialah proses merekod, mengelas, meringkaskan, melapor, dan menganalisis maklumat kewangan sesuatu entiti untuk tujuan membuat keputusan ekonomi", "Merekod belanja operasi", "Merekod pendapatan bukan operasi", "Merekod liabiliti"],
+                question: "Senaraikan tiga pengguna utama penyata kewangan dan jelaskan keperluan mereka.",
+                options: ["•Pelabur: Memerlukan maklumat untuk menilai prestasi syarikat dan potensi pulangan pelaburan.•Pemiutang: Memerlukan maklumat untuk menilai kebolehan syarikat membayar balik hutang.•Pengurusan: Memerlukan maklumat untuk membuat keputusan operasi dan strategik.", "Pelabur: Memerlukan maklumat tentang akaun semasa syarikat", "Pengurusan: Memerlukan maklumat tentang bil dan hutang", "Pemiutang: Memerlukan maklumat untuk menilai keuntungan syarikat"],
+                answer: 0
+            },
+            {
+                question: "Apakah konsep perakaunan yang memastikan transaksi dicatatkan pada nilai asal tanpa mengira nilai semasa?",
+                options: ["Konsep perakaunan yang dimaksudkan adalah Prinsip Kos, yang menyatakan bahawa aset harus dicatatkan pada kos perolehan asal.", "Konsep kos berterusan", "Konsep perakaunan keuntungan", "Konsep penilaian pasaran"],
+                answer: 0
+            },
+            {
+                question: "Apakah maksud konsep 'usaha berterusan' dalam perakaunan?",
+                options: ["Konsep 'usaha berterusan' (going concern) menganggap bahawa entiti perniagaan akan terus beroperasi untuk tempoh yang tidak terhad, melainkan terdapat bukti yang menunjukkan sebaliknya.", "Perniagaan boleh tutup dalam tempoh setahun", "Perniagaan hanya boleh beroperasi untuk satu tahun", "Perniagaan akan digabungkan dengan syarikat lain"],
+                answer: 0
+            },
+            {
+                question: "Bagaimanakah konsep 'entiti berasingan' mempengaruhi penyediaan penyata kewangan?",
+                options: ["Konsep 'entiti berasingan' memisahkan kewangan peribadi pemilik daripada kewangan perniagaan, memastikan bahawa transaksi peribadi tidak dicampur adukkan dengan transaksi perniagaan dalam penyata kewangan.", "Kewangan perniagaan dan peribadi digabungkan", "Perniagaan boleh menggunakan wang peribadi untuk perbelanjaan syarikat", "Perbelanjaan perniagaan boleh dimasukkan ke dalam akaun peribadi"],
+                answer: 0
+            },
+            {
+                question: "Apakah perbezaan antara aset lancar dan aset tidak lancar?",
+                options: ["Aset lancar adalah aset yang dijangka akan ditukar menjadi tunai, dijual, atau digunakan dalam operasi perniagaan dalam tempoh satu tahun, seperti tunai, inventori, dan akaun belum terima. Aset tidak lancar adalah aset yang tidak dijangka akan ditukar menjadi tunai atau digunakan dalam tempoh satu tahun, seperti hartanah, kilang, dan peralatan.", "Aset lancar hanya merujuk kepada tunai dan akaun belum terima", "Aset tidak lancar adalah aset yang boleh dijual dalam tempoh satu tahun", "Aset lancar adalah aset yang tidak memerlukan penilaian"],
+                answer: 0
+            },
+            {
+                question: "Apakah maksud 'liabiliti' dalam perakaunan?",
+                options: ["'Liabiliti' merujuk kepada tanggungjawab kewangan atau hutang yang perlu dibayar oleh perniagaan kepada pihak luar, seperti akaun belum bayar, pinjaman, dan obligasi kewangan lain.", "Liabiliti adalah keuntungan bersih perniagaan", "Liabiliti adalah aset yang belum diterima", "Liabiliti adalah keuntungan yang belum dituntut"],
+                answer: 0
+            },
+            {
+                question: "Jelaskan perbezaan antara pendapatan dan hasil dalam perakaunan.",
+                options: ["Pendapatan merujuk kepada aliran masuk ekonomi yang diterima oleh perniagaan daripada aktiviti utamanya, seperti jualan barang atau perkhidmatan. Hasil merujuk kepada jumlah wang yang diterima daripada penjualan barang atau perkhidmatan sebelum ditolak kos atau perbelanjaan.", "Pendapatan adalah jumlah wang yang diterima selepas potongan kos", "Hasil adalah jumlah wang selepas cukai", "Pendapatan hanya merujuk kepada keuntungan semata-mata"],
+                answer: 0
+            },
+            {
+                question: "Apakah peranan 'imbangan duga' dalam proses perakaunan?",
+                options: ["Imbangan duga adalah senarai semua baki akaun dalam lejar pada suatu tarikh tertentu. Ia digunakan untuk memastikan bahawa jumlah debit adalah sama dengan jumlah kredit, menandakan bahawa rekod perakaunan adalah seimbang dan bebas daripada kesilapan matematik.", "Imbangan duga adalah laporan kewangan tahunan", "Imbangan duga digunakan untuk memeriksa keuntungan syarikat", "Imbangan duga digunakan untuk menilai aliran tunai syarikat"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Nisbah Semasa?",
+                options: ["Nisbah Semasa = Aset Semasa / Liabiliti Semasa", "Nisbah Semasa = Liabiliti Semasa / Aset Semasa", "Nisbah Semasa = Aset Tidak Lancar / Liabiliti Semasa", "Nisbah Semasa = Liabiliti Tidak Lancar / Aset Semasa"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Nisbah Ujian Asid?",
+                options: ["Nisbah Ujian Asid = (Aset Semasa - Inventori) / Liabiliti Semasa", "Nisbah Ujian Asid = Aset Semasa / Liabiliti Semasa", "Nisbah Ujian Asid = Aset Semasa / (Inventori + Liabiliti Semasa)", "Nisbah Ujian Asid = Liabiliti Semasa / Aset Semasa"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Kadar Pusing Ganti Inventori?",
+                options: ["Kadar Pusing Ganti Inventori = Kos Jualan / Inventori Purata", "Kadar Pusing Ganti Inventori = Inventori Purata / Kos Jualan", "Kadar Pusing Ganti Inventori = Kos Jualan / Aset Semasa", "Kadar Pusing Ganti Inventori = Aset Semasa / Kos Jualan"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Margin Untung Kasar?",
+                options: ["Margin Untung Kasar = (Untung Kasar / Jualan) × 100%", "Margin Untung Kasar = Jualan / Untung Kasar", "Margin Untung Kasar = (Jualan / Untung Kasar) × 100%", "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Pulangan Atas Modal (ROCE)?",
+                options: ["ROCE = (Untung Sebelum Cukai / Modal Terlibat) × 100%", "ROCE = (Modal Terlibat / Untung Sebelum Cukai) × 100%", "ROCE = Untung Bersih / Modal Terlibat", "ROCE = Untung Sebelum Cukai / Jualan"],
+                answer: 0
+            },
+            {
+                question: "Apakah formula untuk mengira Tempoh Pembayaran Hutang?",
+                options: ["Tempoh Pembayaran Hutang = (Akaun Belum Bayar / Belian Harian) × 365", "Tempoh Pembayaran Hutang = Belian Harian / Akaun Belum Bayar", "Tempoh Pembayaran Hutang = (Belian Harian / Akaun Belum Bayar) × 365", "Tempoh Pembayaran Hutang = Akaun Belum Bayar / Belian Tahunan"],
                 answer: 0
             }
-            
         ];
 
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let audio = new Audio();
 
+        // Fungsi untuk mengacak pilihan jawapan
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Tukar elemen
+            }
+        }
+
+        // Mengubah suai loadQuestion untuk menggunakan fungsi pengacakan
         function loadQuestion(index) {
             const quizDiv = document.getElementById("quiz");
             quizDiv.innerHTML = "";
             const q = questions[index];
 
+            // Mengacak pilihan jawapan
+            const shuffledOptions = [...q.options];
+            shuffleArray(shuffledOptions);
+
             let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
-            q.options.forEach((option, i) => {
-                questionHTML += `<li onclick="selectAnswer(${i})">${option}</li>`;
+            shuffledOptions.forEach((option, i) => {
+                questionHTML += `<li onclick="selectAnswer(${i}, ${shuffledOptions.indexOf(option)})">${option}</li>`;
             });
             questionHTML += `</ul>`;
             quizDiv.innerHTML = questionHTML;
@@ -251,8 +327,9 @@
             }
         }
 
-        function selectAnswer(optionIndex) {
-            userAnswers[currentQuestionIndex] = optionIndex;
+        // Mengubah suai selectAnswer untuk menangani pengacakan
+        function selectAnswer(optionIndex, originalIndex) {
+            userAnswers[currentQuestionIndex] = originalIndex;
             const options = document.querySelectorAll(".options li");
             options.forEach(option => option.classList.remove("selected"));
             options[optionIndex].classList.add("selected");
@@ -291,69 +368,40 @@
             });
 
             const resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = `Markah: ${score} / ${questions.length}`;
-            resultDiv.style.display = 'block';
+            resultDiv.textContent = `Skor anda: ${score} / ${questions.length}`;
 
-            if (incorrectAnswersHTML) {
-                document.getElementById("incorrectAnswers").innerHTML = `<h3>Jawapan Yang Salah:</h3>${incorrectAnswersHTML}`;
-            } else {
-                document.getElementById("incorrectAnswers").innerHTML = "";
-            }
+            const incorrectDiv = document.getElementById("incorrectAnswers");
+            incorrectDiv.innerHTML = incorrectAnswersHTML;
         }
 
-        function changeBackgroundMusic(event) {
-    const file = event.target.files[0];
-    if (file && file.type.includes("audio/mp3")) {
-        const objectURL = URL.createObjectURL(file);
-        audio.src = objectURL;
-        audio.loop = true;
-
-        // Pastikan audio dapat dimainkan
-        audio.play().catch(function(error) {
-            alert("Gagal memainkan audio: " + error.message);
-        });
-    } else {
-        alert("Sila pilih fail MP3.");
-    }
-}
-
-
-        window.onload = loadQuestion(currentQuestionIndex);
-
+        // Tetapan Popup
         function openSettings() {
-            document.getElementById("overlay").style.display = "block";
-            document.getElementById("settingsPopup").style.display = "block";
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('settingsPopup').style.display = 'block';
         }
 
         function closeSettings() {
-            document.getElementById("overlay").style.display = "none";
-            document.getElementById("settingsPopup").style.display = "none";
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('settingsPopup').style.display = 'none';
         }
 
         function applySettings() {
-            const fontSize = document.getElementById("fontSize").value;
-            document.body.style.fontSize = fontSize;
+            const fontSize = document.getElementById('fontSize').value;
+            document.querySelectorAll('.question, .options li').forEach(el => {
+                el.style.fontSize = fontSize;
+            });
+
+            const bgMusicInput = document.getElementById('bgMusic');
+            if (bgMusicInput.files.length > 0) {
+                audio.src = URL.createObjectURL(bgMusicInput.files[0]);
+                audio.play();
+            }
+
             closeSettings();
         }
 
-        function startDrag(e) {
-            const popup = document.getElementById("settingsPopup");
-            let offsetX = e.clientX - popup.getBoundingClientRect().left;
-            let offsetY = e.clientY - popup.getBoundingClientRect().top;
-
-            function dragMove(e) {
-                popup.style.left = (e.clientX - offsetX) + 'px';
-                popup.style.top = (e.clientY - offsetY) + 'px';
-            }
-
-            function dragEnd() {
-                document.removeEventListener('mousemove', dragMove);
-                document.removeEventListener('mouseup', dragEnd);
-            }
-
-            document.addEventListener('mousemove', dragMove);
-            document.addEventListener('mouseup', dragEnd);
-        }
+        // Menyediakan tetapan awal
+        loadQuestion(currentQuestionIndex);
     </script>
 </body>
 </html>
