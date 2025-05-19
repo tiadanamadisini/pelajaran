@@ -11,6 +11,7 @@
             background-color: #e9ecef;
             margin: 0;
             padding: 0;
+            transition: background-color 0.5s;
         }
 
         .quiz-container {
@@ -21,17 +22,22 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
         }
 
         h2 {
             text-align: center;
             color: #333;
+            margin-bottom: 30px;
         }
 
         .question {
             font-size: 1.5em;
             margin-bottom: 20px;
             color: #007bff;
+            min-height: 80px;
+            transition: all 0.3s;
         }
 
         .options {
@@ -45,17 +51,34 @@
             padding: 15px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
         .options li:hover {
             background-color: #e2e6ea;
-            transform: scale(1.05);
+            transform: translateX(5px);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         }
 
         .options li.selected {
             background-color: #28a745;
             color: white;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+
+        .options li.wrong {
+            background-color: #dc3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        .options li.correct {
+            background-color: #28a745;
+            color: white;
+            animation: pulse 0.5s;
         }
 
         .btn {
@@ -67,11 +90,22 @@
             cursor: pointer;
             border-radius: 5px;
             font-size: 1em;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
         }
 
         .btn:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .result {
@@ -80,12 +114,11 @@
             text-align: center;
             color: #333;
             background-color: #d4edda;
-            padding-top: 15px;
-            padding-bottom: 15px;
+            padding: 15px;
             border-radius: 5px;
             border: 1px solid #c3e6cb;
-            display: inline-block;
-            width: 100%;
+            display: none;
+            animation: fadeIn 1s;
         }
 
         .incorrect-answers {
@@ -96,6 +129,8 @@
             padding: 15px;
             border-radius: 5px;
             border: 1px solid #f5c6cb;
+            display: none;
+            animation: fadeIn 1s;
         }
 
         .incorrect-answers h3 {
@@ -103,21 +138,29 @@
         }
 
         .settings-btn {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
-            padding: 10px;
+            padding: 10px 15px;
             font-size: 16px;
             cursor: pointer;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            border-radius: 50%;
+            transition: all 0.3s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
         }
 
         .settings-btn:hover {
             background-color: #0056b3;
+            transform: rotate(30deg);
         }
 
         .overlay {
@@ -128,7 +171,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             display: none;
-            z-index: 1;
+            z-index: 1000;
         }
 
         .popup {
@@ -140,19 +183,20 @@
             padding: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             display: none;
-            z-index: 2;
+            z-index: 1001;
             border-radius: 8px;
             width: 300px;
-            cursor: move;
+            animation: popIn 0.3s;
         }
 
         .popup h3 {
             text-align: center;
             color: #007bff;
+            margin-top: 0;
         }
 
         .popup select, .popup input[type="file"] {
-            padding: 5px;
+            padding: 10px;
             margin: 10px 0;
             width: 100%;
             border: 1px solid #ced4da;
@@ -174,19 +218,128 @@
         .popup button:hover {
             background-color: #0056b3;
         }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #007bff;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: confettiFall 5s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(1000px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .feedback.correct {
+            background-color: rgba(40, 167, 69, 0.9);
+        }
+
+        .feedback.wrong {
+            background-color: rgba(220, 53, 69, 0.9);
+        }
     </style>
 </head>
 <body>
-    <button class="settings-btn" onclick="openSettings()">⚙ Setting</button>
+    <div class="score-display" id="scoreDisplay">Skor: 0</div>
+    <button class="settings-btn" onclick="openSettings()">⚙</button>
 
     <div class="overlay" id="overlay"></div>
-    <div class="popup" id="settingsPopup" onmousedown="startDrag(event)">
+    <div class="popup" id="settingsPopup">
         <h3>Setting</h3>
         <label for="fontSize">Saiz Font:</label>
         <select id="fontSize">
-            <option value="10px">Kecil</option>
+            <option value="14px">Kecil</option>
             <option value="18px" selected>Sederhana</option>
-            <option value="30px">Besar</option>
+            <option value="22px">Besar</option>
         </select>
 
         <label for="bgMusic">Pilih Lagu MP3:</label>
@@ -197,282 +350,440 @@
         <button onclick="closeSettings()">Tutup</button>
     </div>
 
+    <div class="feedback" id="feedback"></div>
+
     <div class="quiz-container">
         <h2>Kuiz Akaun Tingkatan 5</h2>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="timer" id="timer">Masa: 30s</div>
         <div id="quiz"></div>
-        <button class="btn" id="nextBtn" onclick="nextQuestion()">Soalan Seterusnya</button>
+        <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Soalan Seterusnya</button>
         <div class="result" id="result"></div>
         <div class="incorrect-answers" id="incorrectAnswers"></div>
     </div>
 
     <script>
         const questions = [
-        {
-            "question": "Apakah maksud Analisis Penyata Kewangan ",
-            "options": [
-                "Analisis yang dilakukan ke atas butir-butir dalam Akaun Perdagangan dan Untung Rugi dan Penyata Kedudukan Kewangan sesebuah perniagaan.",
-                "Merekod pendapatan bukan operasi",
-                "Merekod liabiliti",
-                "Menyimpan rekod akaun sahaja"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
-        },
-        {
-            "question": "Apakah Tujuan Analisis Penyata Kewangan?",
-            "options": [
-                "Membantu pihak pengurusan menilai prestasi perniagaan dan seterusnya membuat keputusan kewangan perniagaan",
-                "Menyimpan rekod akaun sahaja",
-                "Membantu dalam penyimpanan stok",
-                "Merekod perbelanjaan harian"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
-        },
-        {
-            "question": "Maksud nisbah keberuntungan?",
-            "options": [
-                "Mengukur kemampuan sesebuah perniagaan dalam memperoleh keuntungan",
-                "Mengukur kecekapan perniagaan mengurus inventori",
-                "pulangan atas modal",
-                "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
-        },
-        {
-            "question": "Maksud nisbah kecairan?",
-            "options": [
-                "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
-                "Mengukur kecekapan perniagaan mengurus inventori",
-                "Konsep kos berterusanpulangan atas modal",
-                "Keadaan Mampu bayar"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
-        },
-        {
-            "question": "Apakah maksud nisbah kecekapan?",
-            "options": [
-                "Mengukur kecekapan perniagaan mengurus inventori",
-                "Konsep kos berterusanpulangan atas modal",
-                "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
-                "Keupayaan perniagaan mengutip dan membayar hutang"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
-        },
-        {
-            "question": "Nisbah kecairan terbahagi kepada 2 iaitu",
-            "options": [
-                "Nisbah semasa , Nisbah ujian asid",
-                "Peratus untung kasar atas kos jualan , peratus untung bersih atas jualan",
-                "kadar ganti pusing inventori , tempoh kutipan hutang",
-                "tempoh pembayaran , tempoh kutipan hutang"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
-        },
-        {
-            "question": "Tujuan perbandingan Prestasi Perniagaan",
-            "options": [
-                "Mengetahui kekuatan dan kelemahan perniagaan",
-                "Mengetahui kedudukan perniagaan yang lebih baik.",
-                "Liabiliti adalah aset yang belum diterima",
-                "Membantu pihak pengurus memperbaiki prestasi perniagaan"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 14"
-        },
-        {
-            "question": "Tujuan Perbandingan Prestasi antara Perniagaan dalam industri yang sama.",
-            "options": [
-                "Mengetahui kedudukan perniagaan yang lebih baik.",
-                "Mengetahui kekuatan dan kelemahan perniagaan",
-                "Merancang dan Mengawal masa depan perniagaan",
-                "Membuat keputusan mingikut matlamat pernigaan demi memaksimumkan keuntungan"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 21"
-        },
-        {
-            "question": "cara meningkatkan prestasi perniagaan",
-            "options": [
-                "Meningkatkan jumlah jualan dengan menambahkan unit keluaran. Jualan boleh ditambah melalui perniagaan dalam talian.",
-                "Imbangan duga adalah laporan kewangan tahunan",
-                "Mengetahui kedudukan perniagaan yang lebih baik.",
-                "Membuat keputusan mingikut matlamat pernigaan demi memaksimumkan keuntungan"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 20"
-        },
-        {
-            "question": "Apakah formula untuk mengira Nisbah Semasa?",
-            "options": [
-                "Nisbah Semasa = Aset Semasa / Liabiliti Semasa",
-                "Nisbah Semasa = Liabiliti Semasa / Aset Semasa",
-                "Nisbah Semasa = Aset Tidak Lancar / Liabiliti Semasa",
-                "Nisbah Semasa = Liabiliti Tidak Lancar / Aset Semasa"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
-        },
-        {
-            "question": "Apakah formula untuk mengira Nisbah Ujian Asid?",
-            "options": [
-                "Nisbah Ujian Asid = (Aset Semasa - Inventori) / Liabiliti Semasa",
-                "Nisbah Ujian Asid = Aset Semasa / Liabiliti Semasa",
-                "Nisbah Ujian Asid = Aset Semasa / (Inventori + Liabiliti Semasa)",
-                "Nisbah Ujian Asid = Liabiliti Semasa / Aset Semasa"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 7"
-        },
-        {
-            "question": "Apakah formula untuk mengira Kadar Pusing Ganti Inventori?",
-            "options": [
-                "Kadar Pusing Ganti Inventori = Kos Jualan / Inventori Purata",
-                "Kadar Pusing Ganti Inventori = Inventori Purata / Kos Jualan",
-                "Kadar Pusing Ganti Inventori = Kos Jualan / Aset Semasa",
-                "Kadar Pusing Ganti Inventori = Aset Semasa / Kos Jualan"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 8"
-        },
-        {
-            "question": "Apakah formula untuk mengira Margin Untung Kasar?",
-            "options": [
-                "Margin Untung Kasar = (Untung Kasar / Jualan Bersih) × 100%",
-                "Margin Untung Kasar = Jualan / Untung Kasar",
-                "Margin Untung Kasar = (Untung berih / Jualan Bersih) × 100%",
-                "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
-        },
-        {
-            "question": "Apakah formula untuk mengira Pulangan Atas Modal?",
-            "options": [
-                "Pulangan Atas Modal = (Untung bersih / Modal awal) × 100%",
-                "Pulangan Atas Modal = (Modal Terlibat / Untung Sebelum Cukai) × 100%",
-                "Pulangan Atas Modal = Untung Bersih / Modal Terlibat",
-                "Pulangan Atas Modal = Untung Sebelum Cukai / Jualan"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
-        },
-        {
-            "question": "Apakah formula untuk mengira Tempoh Pembayaran Hutang?",
-            "options": [
-                "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
-                "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
-                "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
-                "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 10"
-        },{
-            "question": "Apakah formula untuk mengira Tempoh kutipan Hutang?",
-            "options": [
-                "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
-                "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
-                "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
-                "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 9"
-        },{
-            "question": "Apakah formula untuk mengira Margin Untung Bersih?",
-            "options": [
-                "Margin Untung Bersih = (Untung berih / Jualan Bersih) × 100%",
-                "Margin Untung Bersih = (Untung Kasar / Jualan Bersih) × 100%",
-                "Margin Untung Bersih = (Jualan / Untung Kasar) × 100%",
-                "Margin Untung Bersih = (Kos Jualan / Jualan) × 100%"
-            ],
-            "answer": 0,
-            "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
-        }
-        
+            {
+                "question": "Apakah maksud Analisis Penyata Kewangan ",
+                "options": [
+                    "Analisis yang dilakukan ke atas butir-butir dalam Akaun Perdagangan dan Untung Rugi dan Penyata Kedudukan Kewangan sesebuah perniagaan.",
+                    "Merekod pendapatan bukan operasi",
+                    "Merekod liabiliti",
+                    "Menyimpan rekod akaun sahaja"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
+            },
+            {
+                "question": "Apakah Tujuan Analisis Penyata Kewangan?",
+                "options": [
+                    "Membantu pihak pengurusan menilai prestasi perniagaan dan seterusnya membuat keputusan kewangan perniagaan",
+                    "Menyimpan rekod akaun sahaja",
+                    "Membantu dalam penyimpanan stok",
+                    "Merekod perbelanjaan harian"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 2"
+            },
+            {
+                "question": "Maksud nisbah keberuntungan?",
+                "options": [
+                    "Mengukur kemampuan sesebuah perniagaan dalam memperoleh keuntungan",
+                    "Mengukur kecekapan perniagaan mengurus inventori",
+                    "pulangan atas modal",
+                    "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+            },
+            {
+                "question": "Maksud nisbah kecairan?",
+                "options": [
+                    "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                    "Mengukur kecekapan perniagaan mengurus inventori",
+                    "Konsep kos berterusanpulangan atas modal",
+                    "Keadaan Mampu bayar"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+            },
+            {
+                "question": "Apakah maksud nisbah kecekapan?",
+                "options": [
+                    "Mengukur kecekapan perniagaan mengurus inventori",
+                    "Konsep kos berterusanpulangan atas modal",
+                    "Mengukur Keupayaan perniagaan membuat pelbagai jenis pembayaran kepada pihak luaran",
+                    "Keupayaan perniagaan mengutip dan membayar hutang"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+            },
+            {
+                "question": "Nisbah kecairan terbahagi kepada 2 iaitu",
+                "options": [
+                    "Nisbah semasa , Nisbah ujian asid",
+                    "Peratus untung kasar atas kos jualan , peratus untung bersih atas jualan",
+                    "kadar ganti pusing inventori , tempoh kutipan hutang",
+                    "tempoh pembayaran , tempoh kutipan hutang"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 3"
+            },
+            {
+                "question": "Tujuan perbandingan Prestasi Perniagaan",
+                "options": [
+                    "Mengetahui kekuatan dan kelemahan perniagaan",
+                    "Mengetahui kedudukan perniagaan yang lebih baik.",
+                    "Liabiliti adalah aset yang belum diterima",
+                    "Membantu pihak pengurus memperbaiki prestasi perniagaan"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 14"
+            },
+            {
+                "question": "Tujuan Perbandingan Prestasi antara Perniagaan dalam industri yang sama.",
+                "options": [
+                    "Mengetahui kedudukan perniagaan yang lebih baik.",
+                    "Mengetahui kekuatan dan kelemahan perniagaan",
+                    "Merancang dan Mengawal masa depan perniagaan",
+                    "Membuat keputusan mingikut matlamat pernigaan demi memaksimumkan keuntungan"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 21"
+            },
+            {
+                "question": "cara meningkatkan prestasi perniagaan",
+                "options": [
+                    "Meningkatkan jumlah jualan dengan menambahkan unit keluaran. Jualan boleh ditambah melalui perniagaan dalam talian.",
+                    "Imbangan duga adalah laporan kewangan tahunan",
+                    "Mengetahui kedudukan perniagaan yang lebih baik.",
+                    "Membuat keputusan mingikut matlamat pernigaan demi memaksimumkan keuntungan"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 20"
+            },
+            {
+                "question": "Apakah formula untuk mengira Nisbah Semasa?",
+                "options": [
+                    "Nisbah Semasa = Aset Semasa / Liabiliti Semasa",
+                    "Nisbah Semasa = Liabiliti Semasa / Aset Semasa",
+                    "Nisbah Semasa = Aset Tidak Lancar / Liabiliti Semasa",
+                    "Nisbah Semasa = Liabiliti Tidak Lancar / Aset Semasa"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
+            },
+            {
+                "question": "Apakah formula untuk mengira Nisbah Ujian Asid?",
+                "options": [
+                    "Nisbah Ujian Asid = (Aset Semasa - Inventori) / Liabiliti Semasa",
+                    "Nisbah Ujian Asid = Aset Semasa / Liabiliti Semasa",
+                    "Nisbah Ujian Asid = Aset Semasa / (Inventori + Liabiliti Semasa)",
+                    "Nisbah Ujian Asid = Liabiliti Semasa / Aset Semasa"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 7"
+            },
+            {
+                "question": "Apakah formula untuk mengira Kadar Pusing Ganti Inventori?",
+                "options": [
+                    "Kadar Pusing Ganti Inventori = Kos Jualan / Inventori Purata",
+                    "Kadar Pusing Ganti Inventori = Inventori Purata / Kos Jualan",
+                    "Kadar Pusing Ganti Inventori = Kos Jualan / Aset Semasa",
+                    "Kadar Pusing Ganti Inventori = Aset Semasa / Kos Jualan"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 8"
+            },
+            {
+                "question": "Apakah formula untuk mengira Margin Untung Kasar?",
+                "options": [
+                    "Margin Untung Kasar = (Untung Kasar / Jualan Bersih) × 100%",
+                    "Margin Untung Kasar = Jualan / Untung Kasar",
+                    "Margin Untung Kasar = (Untung berih / Jualan Bersih) × 100%",
+                    "Margin Untung Kasar = (Kos Jualan / Jualan) × 100%"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
+            },
+            {
+                "question": "Apakah formula untuk mengira Pulangan Atas Modal?",
+                "options": [
+                    "Pulangan Atas Modal = (Untung bersih / Modal awal) × 100%",
+                    "Pulangan Atas Modal = (Modal Terlibat / Untung Sebelum Cukai) × 100%",
+                    "Pulangan Atas Modal = Untung Bersih / Modal Terlibat",
+                    "Pulangan Atas Modal = Untung Sebelum Cukai / Jualan"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 6"
+            },
+            {
+                "question": "Apakah formula untuk mengira Tempoh Pembayaran Hutang?",
+                "options": [
+                    "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
+                    "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
+                    "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
+                    "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 10"
+            },{
+                "question": "Apakah formula untuk mengira Tempoh kutipan Hutang?",
+                "options": [
+                    "Tempoh kutipan Hutang = (Akaun Belum Terima / Jualan Kredit) × 365 hari",
+                    "Tempoh kutipan Hutang = (Akaun Belum Bayar / Belian Kredit) × 365 hari",
+                    "Tempoh kutipan Hutang = Belian Harian / Akaun Belum Bayar",
+                    "Tempoh kutipan Hutang = (Belian Harian / Akaun Belum Bayar) × 365",
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 9"
+            },{
+                "question": "Apakah formula untuk mengira Margin Untung Bersih?",
+                "options": [
+                    "Margin Untung Bersih = (Untung berih / Jualan Bersih) × 100%",
+                    "Margin Untung Bersih = (Untung Kasar / Jualan Bersih) × 100%",
+                    "Margin Untung Bersih = (Jualan / Untung Kasar) × 100%",
+                    "Margin Untung Bersih = (Kos Jualan / Jualan) × 100%"
+                ],
+                "answer": 0,
+                "reference": "Buku Perakaunan KPM, Tingkatan 5, Muka Surat 4"
+            }
         ];
 
         let currentQuestionIndex = 0;
         let userAnswers = [];
+        let score = 0;
+        let timer;
+        let timeLeft = 30;
         let audio = new Audio();
+        let correctAudio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...');
+        let wrongAudio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...');
+        let shuffledQuestions = [];
+        let shuffledOptions = [];
+
+        // Fungsi untuk mengacak array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         // Fungsi untuk memuatkan soalan
-function loadQuestion(index) {
-    const quizDiv = document.getElementById("quiz");
-    quizDiv.innerHTML = "";
-    const q = questions[index];
+        function loadQuestion(index) {
+            clearInterval(timer);
+            timeLeft = 30;
+            document.getElementById('timer').textContent = `Masa: ${timeLeft}s`;
+            
+            // Mulai timer
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Masa: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
 
-    // Simpan jawapan betul
-    const correctAnswerIndex = q.answer;
+            const quizDiv = document.getElementById("quiz");
+            quizDiv.innerHTML = "";
+            
+            // Acak urutan soalan jika belum diacak
+            if (shuffledQuestions.length === 0) {
+                shuffledQuestions = [...questions];
+                shuffleArray(shuffledQuestions);
+            }
+            
+            const q = shuffledQuestions[index];
+            
+            // Acak pilihan jawapan
+            shuffledOptions = [...q.options];
+            const correctAnswer = shuffledOptions[q.answer];
+            shuffleArray(shuffledOptions);
+            
+            // Cari indeks jawapan yang benar dalam pilihan yang sudah diacak
+            const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+            
+            let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
+            
+            // Paparkan pilihan jawapan dalam urutan acak
+            shuffledOptions.forEach((option, i) => {
+                questionHTML += `<li onclick="selectAnswer(${i}, ${newCorrectIndex})">${option}</li>`;
+            });
+            questionHTML += `</ul>`;
+            quizDiv.innerHTML = questionHTML;
+            
+            // Update progress bar
+            const progress = ((index + 1) / shuffledQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            const nextBtn = document.getElementById("nextBtn");
+            nextBtn.disabled = true;
+            
+            if (index === shuffledQuestions.length - 1) {
+                nextBtn.textContent = "Semak Jawapan";
+                nextBtn.setAttribute("onclick", "checkAnswers()");
+            } else {
+                nextBtn.textContent = "Soalan Seterusnya";
+                nextBtn.setAttribute("onclick", "nextQuestion()");
+            }
+        }
 
-    let questionHTML = `<div class="question">${q.question}</div><ul class="options">`;
+        // Fungsi untuk memilih jawapan
+        function selectAnswer(selectedIndex, correctIndex) {
+            clearInterval(timer);
+            const options = document.querySelectorAll(".options li");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            // Simpan jawapan pengguna berdasarkan indeks asal
+            const originalQuestionIndex = questions.findIndex(q => q.question === shuffledQuestions[currentQuestionIndex].question);
+            const selectedOptionText = shuffledOptions[selectedIndex];
+            const originalOptions = questions[originalQuestionIndex].options;
+            const originalSelectedIndex = originalOptions.indexOf(selectedOptionText);
+            
+            userAnswers[originalQuestionIndex] = originalSelectedIndex;
+            
+            options.forEach(option => option.classList.remove("selected", "correct", "wrong"));
+            
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add("correct");
+                score++;
+                document.getElementById('scoreDisplay').textContent = `Skor: ${score}`;
+                showFeedback("Betul!", "correct");
+                createConfetti();
+                playCorrectSound();
+            } else {
+                options[selectedIndex].classList.add("wrong");
+                options[correctIndex].classList.add("correct");
+                showFeedback("Salah!", "wrong");
+                playWrongSound();
+            }
+            
+            nextBtn.disabled = false;
+        }
 
-    // Paparkan pilihan jawapan dalam urutan asal
-    q.options.forEach((option, i) => {
-        questionHTML += `<li onclick="selectAnswer(${i}, ${correctAnswerIndex})">${option}</li>`;
-    });
-    questionHTML += `</ul>`;
-    quizDiv.innerHTML = questionHTML;
+        function timeUp() {
+            const options = document.querySelectorAll(".options li");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            // Cari indeks jawapan yang benar
+            const q = shuffledQuestions[currentQuestionIndex];
+            const correctAnswer = q.options[q.answer];
+            const correctIndex = shuffledOptions.indexOf(correctAnswer);
+            
+            options.forEach(option => option.classList.remove("selected", "correct", "wrong"));
+            options[correctIndex].classList.add("correct");
+            
+            // Simpan jawapan kosong (tidak dijawab)
+            const originalQuestionIndex = questions.findIndex(q => q.question === shuffledQuestions[currentQuestionIndex].question);
+            userAnswers[originalQuestionIndex] = -1;
+            
+            nextBtn.disabled = false;
+            showFeedback("Masa Tamat!", "wrong");
+            playWrongSound();
+        }
 
-    const nextBtn = document.getElementById("nextBtn");
-    if (index === questions.length - 1) {
-        nextBtn.textContent = "Semak Jawapan";
-        nextBtn.setAttribute("onclick", "checkAnswers()");
-    } else {
-        nextBtn.textContent = "Soalan Seterusnya";
-        nextBtn.setAttribute("onclick", "nextQuestion()");
-    }
-}
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 1000);
+        }
 
-// Fungsi untuk memilih jawapan
-function selectAnswer(optionIndex, correctAnswerIndex) {
-    userAnswers[currentQuestionIndex] = optionIndex; // Simpan jawapan pengguna
-    const options = document.querySelectorAll(".options li");
-    options.forEach(option => option.classList.remove("selected"));
-    options[optionIndex].classList.add("selected");
-}
+        function createConfetti() {
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+            const container = document.querySelector('.quiz-container');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                container.appendChild(confetti);
+                
+                // Buang confetti setelah animasi selesai
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
 
+        function playCorrectSound() {
+            // Bunyi sederhana untuk jawapan benar
+            correctAudio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...';
+            correctAudio.play();
+        }
+
+        function playWrongSound() {
+            // Bunyi sederhana untuk jawapan salah
+            wrongAudio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...';
+            wrongAudio.play();
+        }
 
         function nextQuestion() {
-            if (userAnswers[currentQuestionIndex] === undefined) {
-                alert("Sila pilih jawapan terlebih dahulu!");
-                return;
-            }
-
             currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
+            if (currentQuestionIndex < shuffledQuestions.length) {
                 loadQuestion(currentQuestionIndex);
             } else {
-                showResult();
+                checkAnswers();
             }
         }
 
         function checkAnswers() {
-            showResult();
-        }
-
-        function showResult() {
+            clearInterval(timer);
             document.getElementById("quiz").style.display = 'none';
             document.getElementById("nextBtn").style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
 
-            let score = 0;
-            let incorrectAnswersHTML = "";
+            let incorrectAnswersHTML = "<h3>Jawapan yang Salah:</h3>";
+            let incorrectCount = 0;
+            
             questions.forEach((q, index) => {
-                if (userAnswers[index] === q.answer) {
-                    score++;
-                } else {
-                    incorrectAnswersHTML += `<p><strong>Soalan ${index + 1}:</strong> <strong>${q.question}</strong><br>Jawapan yang betul: ${q.options[q.answer]}<br>Jawapan anda: ${q.options[userAnswers[index]]}</p><p><em>Rujukan: ${q.reference}</em></p>`;
+                if (userAnswers[index] === undefined || userAnswers[index] !== q.answer) {
+                    incorrectCount++;
+                    incorrectAnswersHTML += `<p><strong>Soalan ${index + 1}:</strong> <strong>${q.question}</strong><br>`;
+                    incorrectAnswersHTML += `Jawapan yang betul: ${q.options[q.answer]}<br>`;
+                    
+                    if (userAnswers[index] === undefined || userAnswers[index] === -1) {
+                        incorrectAnswersHTML += "Anda tidak menjawab soalan ini";
+                    } else {
+                        incorrectAnswersHTML += `Jawapan anda: ${q.options[userAnswers[index]]}`;
+                    }
+                    
+                    incorrectAnswersHTML += `</p><p><em>Rujukan: ${q.reference}</em></p>`;
                 }
             });
 
             const resultDiv = document.getElementById("result");
-            resultDiv.textContent = `Skor anda: ${score} / ${questions.length}`;
+            resultDiv.textContent = `Skor akhir anda: ${score} / ${questions.length}`;
+            resultDiv.style.display = 'block';
 
             const incorrectDiv = document.getElementById("incorrectAnswers");
-            incorrectDiv.innerHTML = incorrectAnswersHTML;
+            if (incorrectCount > 0) {
+                incorrectDiv.innerHTML = incorrectAnswersHTML;
+                incorrectDiv.style.display = 'block';
+            } else {
+                incorrectDiv.style.display = 'none';
+            }
+            
+            // Tampilkan efek khusus jika semua jawaban benar
+            if (score === questions.length) {
+                resultDiv.style.backgroundColor = '#28a745';
+                resultDiv.style.color = 'white';
+                resultDiv.textContent += " - Tahniah! Semua jawapan betul!";
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => createConfetti(), i * 50);
+                }
+            }
         }
 
         // Tetapan Popup
@@ -495,15 +806,23 @@ function selectAnswer(optionIndex, correctAnswerIndex) {
             const bgMusicInput = document.getElementById('bgMusic');
             if (bgMusicInput.files.length > 0) {
                 audio.src = URL.createObjectURL(bgMusicInput.files[0]);
-                audio.loop = true;  // Menambah fungsi loop
+                audio.loop = true;
                 audio.play();
             }
         
             closeSettings();
         }
 
+        function changeBackgroundMusic(event) {
+            const file = event.target.files[0];
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+                audio.loop = true;
+                audio.play();
+            }
+        }
 
-        // Menyediakan tetapan awal
+        // Mulai kuiz
         loadQuestion(currentQuestionIndex);
     </script>
 </body>
