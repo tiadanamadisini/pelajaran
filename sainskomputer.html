@@ -911,7 +911,7 @@
 }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false">
     <header>
         <div class="header-content container">
             <div>
@@ -1109,6 +1109,24 @@
     </footer>
 
     <script>
+        // Sekat klik kanan (alternatif inline)
+        document.addEventListener("contextmenu", function(e) {
+          e.preventDefault();
+        });
+    
+        // Sekat shortcut keyboard tertentu
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.code === "F12" ||                              // F12
+            (e.ctrlKey && e.shiftKey && e.code === "KeyI") || // Ctrl+Shift+I
+            (e.ctrlKey && e.code === "KeyU") ||              // Ctrl+U
+            (e.ctrlKey && e.shiftKey && e.code === "KeyJ")   // Ctrl+Shift+J
+          ) {
+            e.preventDefault();
+            alert("Tindakan ini telah disekat.");
+            return false;
+          }
+        });
         // Quiz Data - organized by chapter
         const quizData = {
             t4c1: {
