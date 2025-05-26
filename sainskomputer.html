@@ -1,0 +1,2963 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOT Tutor Sains Komputer SPM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #f72585;
+            --accent: #4cc9f0;
+            --dark: #2b2d42;
+            --darker: #1a1a2e;
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --gray: #adb5bd;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        .user-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            flex: 0 0 320px;
+            background: var(--lighter);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-title i {
+            font-size: 1rem;
+        }
+        
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .chapter-item {
+            margin-bottom: 10px;
+        }
+        
+        .chapter-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--light);
+            border: none;
+            border-radius: var(--radius-sm);
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--dark);
+            gap: 10px;
+        }
+        
+        .chapter-btn i {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .chapter-btn:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+            color: var(--primary);
+        }
+        
+        .chapter-btn:hover i {
+            color: var(--primary);
+        }
+        
+        .chapter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .chapter-btn.active i {
+            color: white;
+        }
+        
+        .chat-area {
+            flex: 1;
+            background: var(--lighter);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+            transition: transform 0.3s ease;
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .chat-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            background-color: #fafafa;
+            scroll-behavior: smooth;
+        }
+        
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+        }
+        
+        .user-message {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot-message {
+            background-color: var(--lighter);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .message-actions {
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            display: none;
+            gap: 5px;
+        }
+        
+        .message:hover .message-actions {
+            display: flex;
+        }
+        
+        .message-action {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.7rem;
+        }
+        
+        .message-action:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .chat-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        
+        #user-input {
+            width: 100%;
+            padding: 14px 50px 14px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--lighter);
+        }
+        
+        #user-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        .input-actions {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 5px;
+        }
+        
+        .input-action {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        
+        .input-action:hover {
+            color: var(--primary);
+        }
+        
+        #send-btn {
+            padding: 14px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #send-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .quick-questions {
+            margin-top: 20px;
+        }
+        
+        .quick-question-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            color: var(--dark);
+        }
+        
+        .quick-question-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .typing-indicator {
+            display: none;
+            color: #666;
+            font-style: italic;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-radius: var(--radius-sm);
+            align-self: flex-start;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .typing-dots {
+            display: inline-flex;
+            gap: 3px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .code-keyword {
+            color: #c678dd;
+        }
+        
+        .code-string {
+            color: #98c379;
+        }
+        
+        .code-comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+        
+        .code-number {
+            color: #d19a66;
+        }
+        
+        .topic-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .topic-desc {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .topic-icon {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.8rem;
+            text-align: right;
+            margin-top: 5px;
+            color: var(--gray);
+        }
+        
+        .learning-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: var(--radius-sm);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .dark-mode {
+            background-color: var(--darker);
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .sidebar,
+        .dark-mode .chat-area {
+            background-color: #2b2d42;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .chapter-btn {
+            background-color: #3a3d5a;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .chapter-btn:hover {
+            background-color: #4a4f73;
+        }
+        
+        .dark-mode .chapter-btn.active {
+            background-color: var(--primary);
+        }
+        
+        .dark-mode .bot-message {
+            background-color: #3a3d5a;
+            border-color: #4a4f73;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode #user-input {
+            background-color: #3a3d5a;
+            border-color: #4a4f73;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .quick-question-btn {
+            background-color: #3a3d5a;
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .typing-indicator {
+            background-color: #3a3d5a;
+        }
+        
+        .dark-mode .code-block {
+            background-color: #1e1e2e;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 1;
+                position: static;
+                max-height: none;
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 85%;
+                height: 100vh;
+                z-index: 100;
+                padding-top: 80px;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .chat-area {
+                min-height: 400px;
+                transform: translateX(0);
+            }
+            
+            .chat-area.slide-left {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar-toggle {
+                display: block !important;
+            }
+            
+            .chat-toggle {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-controls {
+                margin-top: 10px;
+            }
+            
+            .chat-input-container {
+                flex-direction: column;
+            }
+            
+            #send-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Quiz Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .quiz-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .quiz-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        #question-container {
+            margin: 20px 0;
+        }
+        
+        .question {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .options {
+            margin-top: 10px;
+        }
+        
+        .option {
+            display: block;
+            margin: 8px 0;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+        }
+        
+        .option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .option.incorrect {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        #result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .result-failure {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Mobile navigation */
+        .sidebar-toggle, .chat-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-size: 20px;
+            z-index: 90;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar-toggle {
+            left: 20px;
+        }
+        
+        .chat-toggle {
+            right: 20px;
+        }
+        
+        /* Overlay for sidebar */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* Clickable questions */
+        .clickable-question {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Topic links in messages */
+        .topic-link {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Slide transitions */
+        .slide-in {
+            animation: slideIn 0.3s forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content container">
+            <div>
+                <h1>BOT Tutor Sains Komputer</h1>
+                <div class="subtitle"> Tingkatan 4 & 5</div>
+            </div>
+            <div class="user-controls">
+                <button class="btn-icon" id="dark-mode-toggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn-icon" id="reset-chat" title="Reset Chat">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="btn-icon" id="help-btn" title="Help">
+                    <i class="fas fa-question"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h2 class="sidebar-title"><i class="fas fa-book-open"></i> Kandungan</h2>
+                    <h3 class="sidebar-title"><i class="fas fa-graduation-cap"></i> Tingkatan 4</h3>
+                    <ul class="chapter-list">
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t4c1')">
+                                <i class="fas fa-code"></i> Bab 1: Pengaturcaraan
+                            </button>
+                        </li>
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t4c2')">
+                                <i class="fas fa-database"></i> Bab 2: Pangkalan Data
+                            </button>
+                        </li>
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t4c3')">
+                                <i class="fas fa-users"></i> Bab 3: Interaksi Manusia & Komputer
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <h3 class="sidebar-title"><i class="fas fa-graduation-cap"></i> Tingkatan 5</h3>
+                    <ul class="chapter-list">
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t5c1')">
+                                <i class="fas fa-desktop"></i> Bab 1: Perkomputeran
+                            </button>
+                        </li>
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t5c2')">
+                                <i class="fas fa-server"></i> Bab 2: Pangkalan Data Lanjutan
+                            </button>
+                        </li>
+                        <li class="chapter-item">
+                            <button class="chapter-btn" onclick="loadChapter('t5c3')">
+                                <i class="fas fa-globe"></i> Bab 3: Pengaturcaraan Berasaskan Web
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title"><i class="fas fa-bolt"></i> Soalan Pantas</h3>
+                    <div class="quick-questions">
+                        <button class="quick-question-btn" onclick="askQuickQuestion('Apa itu algoritma?')">
+                            <i class="fas fa-question-circle"></i> Apa itu algoritma?
+                        </button>
+                        <button class="quick-question-btn" onclick="askQuickQuestion('Jelaskan struktur kawalan dalam pengaturcaraan')">
+                            <i class="fas fa-code-branch"></i> Struktur kawalan
+                        </button>
+                        <button class="quick-question-btn" onclick="askQuickQuestion('Apa itu SQL?')">
+                            <i class="fas fa-database"></i> Apa itu SQL?
+                        </button>
+                        <button class="quick-question-btn" onclick="askQuickQuestion('Beza client side dan server side scripting')">
+                            <i class="fas fa-laptop-code"></i> Client vs Server Scripting
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title"><i class="fas fa-chart-line"></i> Kemajuan Pembelajaran</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">0% selesai</div>
+                    
+                    <div class="learning-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="topics-learned">0</div>
+                            <div class="stat-label">Topik Dipelajari</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="questions-asked">0</div>
+                            <div class="stat-label">Soalan Ditanya</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="chapters-completed">0</div>
+                            <div class="stat-label">Bab Selesai</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Modal -->
+            <div id="quiz-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="quiz-title">Ujian Kefahaman</h2>
+                    <div id="quiz-container">
+                        <div id="question-container"></div>
+                        <div id="result-container"></div>
+                        <button id="start-quiz-btn" class="quiz-btn">Mula Ujian</button>
+                        <button id="next-question-btn" class="quiz-btn" style="display:none;">Soalan Seterusnya</button>
+                        <button id="submit-quiz-btn" class="quiz-btn" style="display:none;">Hantar Jawapan</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="chat-title" id="current-chapter-title">AI Tutor Sains Komputer</div>
+                    <div class="chat-actions">
+                        <button class="btn-icon" id="voice-input-btn" title="Voice Input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="btn-icon" id="suggest-questions-btn" title="Suggest Questions">
+                            <i class="fas fa-lightbulb"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message-container" id="message-container">
+                        <div class="message bot-message">
+                            <div class="message-actions">
+                                <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
+                            </div>
+                            Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>
+                            Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>
+                            • Pilih bab dari menu sebelah<br>
+                            • Tanya soalan terus kepada saya<br>
+                            • Gunakan butang "Soalan Pantas"<br><br>
+                            Mari kita mula belajar! 🚀
+                            <div class="message-time">Hari ini</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typing-indicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    BOT Tutor sedang menaip...
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="user-input" placeholder="Tanya soalan Sains Komputer..." onkeypress="handleKeyPress(event)">
+                        <div class="input-actions">
+                            <button class="input-action" id="emoji-btn" title="Emoji">
+                                <i class="far fa-smile"></i>
+                            </button>
+                            <button class="input-action" id="upload-btn" title="Upload File">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button id="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i> Hantar
+                    </button>
+                </div>
+                <p style="font-size: 10px;position: relative;top: 5px;">KADANG BOT MEMBERIKAN KESILAPAN JAWAPAN</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile navigation buttons -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <button class="chat-toggle" id="chat-toggle" style="display: none;">
+        <i class="fas fa-comments"></i>
+    </button>
+    
+    <!-- Overlay for sidebar -->
+    <div class="overlay" id="overlay"></div>
+    
+    <footer>
+        &copy; 2025 BOT Tutor Sains Komputer SPM
+    </footer>
+
+    <script>
+        // Quiz Data - organized by chapter
+        const quizData = {
+            t4c1: {
+                title: "Ujian Bab 1: Pengaturcaraan",
+                questions: [
+                    {
+                        question: "Apakah langkah pertama dalam strategi penyelesaian masalah pengaturcaraan?",
+                        options: [
+                            "Menulis kod",
+                            "Analisis masalah",
+                            "Pengujian program",
+                            "Dokumentasi"
+                        ],
+                        answer: 1,
+                        explanation: "Analisis masalah adalah langkah pertama yang penting untuk memahami keperluan dan spesifikasi sebelum memulakan penulisan kod."
+                    },
+                    {
+                        question: "Manakah antara berikut BUKAN ciri algoritma yang baik?",
+                        options: [
+                            "Mempunyai permulaan dan pengakhiran yang jelas",
+                            "Langkah-langkah yang terhingga",
+                            "Bergantung pada bahasa pengaturcaraan tertentu",
+                            "Tidak ambigu"
+                        ],
+                        answer: 2,
+                        explanation: "Algoritma yang baik harus bebas daripada bahasa pengaturcaraan tertentu supaya boleh dilaksanakan dalam pelbagai bahasa."
+                    },
+                    {
+                        question: "Apakah output bagi struktur kawalan berikut jika x = 5? if (x > 3) { console.log('A'); } else { console.log('B'); }",
+                        options: [
+                            "A",
+                            "B",
+                            "Tiada output",
+                            "Error"
+                        ],
+                        answer: 0,
+                        explanation: "Oleh kerana x = 5 adalah lebih besar daripada 3, syarat if adalah benar dan 'A' akan dicetak."
+                    }
+                ]
+            },
+            t4c2: {
+                title: "Ujian Bab 2: Pangkalan Data",
+                questions: [
+                    {
+                        question: "Apakah fungsi kunci primer dalam pangkalan data hubungan?",
+                        options: [
+                            "Mengurangkan saiz pangkalan data",
+                            "Menjadi pengenal unik untuk setiap rekod dalam jadual",
+                            "Menyambungkan jadual yang berbeza",
+                            "Meningkatkan kelajuan pertanyaan"
+                        ],
+                        answer: 1,
+                        explanation: "Kunci primer berfungsi sebagai pengenal unik untuk membezakan setiap rekod dalam jadual."
+                    },
+                    {
+                        question: "Manakah antara berikut adalah pernyataan SQL yang BETUL untuk membuat jadual Pelajar?",
+                        options: [
+                            "CREATE DATABASE Pelajar;",
+                            "INSERT INTO Pelajar VALUES (1, 'Ali');",
+                            "CREATE TABLE Pelajar (id INT PRIMARY KEY, nama VARCHAR(50));",
+                            "SELECT * FROM Pelajar;"
+                        ],
+                        answer: 2,
+                        explanation: "CREATE TABLE adalah sintaks yang betul untuk mencipta jadual baru dalam SQL."
+                    },
+                    {
+                        question: "Apakah tujuan penormalan dalam pangkalan data?",
+                        options: [
+                            "Meningkatkan kelajuan pertanyaan",
+                            "Mengurangkan redundansi data",
+                            "Menambah bilangan jadual",
+                            "Mengurangkan saiz pangkalan data"
+                        ],
+                        answer: 1,
+                        explanation: "Penormalan bertujuan untuk mengurangkan redundansi data dan meningkatkan integriti data."
+                    }
+                ]
+            },
+            t5c1: {
+                title: "Ujian Bab 1: Perkomputeran",
+                questions: [
+                    {
+                        question: "Manakah antara berikut BUKAN komponen utama CPU?",
+                        options: [
+                            "Unit Kawalan (CU)",
+                            "Unit Logik Aritmetik (ALU)",
+                            "Register",
+                            "Hard Disk"
+                        ],
+                        answer: 3,
+                        explanation: "Hard Disk adalah peranti storan sekunder dan bukan komponen CPU."
+                    },
+                    {
+                        question: "Apakah output get logik AND jika input A=1 dan B=0?",
+                        options: [
+                            "0",
+                            "1",
+                            "Tidak tentu",
+                            "Error"
+                        ],
+                        answer: 0,
+                        explanation: "Get AND hanya menghasilkan 1 jika semua input adalah 1. Jika salah satu input adalah 0, output adalah 0."
+                    }
+                ]
+            }
+        };
+
+        // Quiz Variables
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        // DOM Elements
+        const quizModal = document.getElementById('quiz-modal');
+        const quizTitle = document.getElementById('quiz-title');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const submitQuizBtn = document.getElementById('submit-quiz-btn');
+        const closeBtn = document.querySelector('.close');
+
+        // Add Quiz Button to Sidebar (dynamically)
+        const sidebar = document.querySelector('.sidebar');
+        const quizSection = document.createElement('div');
+        quizSection.className = 'sidebar-section';
+        quizSection.innerHTML = `
+            <h3 class="sidebar-title"><i class="fas fa-question-circle"></i> Ujian Kefahaman</h3>
+            <button id="open-quiz-btn" class="chapter-btn" style="width:100%; text-align:center;">
+                <i class="fas fa-star"></i> Mulakan Ujian
+            </button>
+            <div id="quiz-progress" style="margin-top:15px; display:none;">
+                <div class="progress-container">
+                    <div class="progress-bar" id="quiz-progress-bar"></div>
+                </div>
+                <div style="text-align:center; font-size:0.8rem;">Kemajuan Ujian</div>
+            </div>
+        `;
+        sidebar.appendChild(quizSection);
+
+        const openQuizBtn = document.getElementById('open-quiz-btn');
+        const quizProgress = document.getElementById('quiz-progress');
+        const quizProgressBar = document.getElementById('quiz-progress-bar');
+
+        // Event Listeners
+        openQuizBtn.addEventListener('click', () => {
+            if (!currentChapter) {
+                addBotMessage("Sila pilih bab dahulu sebelum memulakan ujian.");
+                return;
+            }
+            
+            if (!quizData[currentChapter]) {
+                addBotMessage("Maaf, tiada ujian tersedia untuk bab ini.");
+                return;
+            }
+            
+            showQuizModal();
+        });
+
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextQuestionBtn.addEventListener('click', showNextQuestion);
+        submitQuizBtn.addEventListener('click', submitQuiz);
+        closeBtn.addEventListener('click', closeQuizModal);
+
+        // Show Quiz Modal
+        function showQuizModal() {
+            currentQuiz = quizData[currentChapter];
+            quizTitle.textContent = currentQuiz.title;
+            quizModal.style.display = "block";
+            
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            
+            // Show start button
+            startQuizBtn.style.display = "inline-block";
+            nextQuestionBtn.style.display = "none";
+            submitQuizBtn.style.display = "none";
+            questionContainer.innerHTML = "";
+            resultContainer.style.display = "none";
+            
+            // Update quiz progress in sidebar
+            quizProgress.style.display = "block";
+            updateQuizProgress(0);
+        }
+
+        // Close Quiz Modal
+        function closeQuizModal() {
+            quizModal.style.display = "none";
+        }
+
+        // Start Quiz
+        function startQuiz() {
+            startQuizBtn.style.display = "none";
+            nextQuestionBtn.style.display = "inline-block";
+            showQuestion();
+        }
+
+        // Show Question
+        function showQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <h3>Soalan ${currentQuestionIndex + 1}: ${question.question}</h3>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-index="${index}">
+                                ${String.fromCharCode(65 + index)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', selectAnswer);
+            });
+            
+            // Update progress
+            updateQuizProgress((currentQuestionIndex / currentQuiz.questions.length) * 100);
+            
+            // Show submit button if last question
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                nextQuestionBtn.style.display = "none";
+                submitQuizBtn.style.display = "inline-block";
+            }
+        }
+
+        // Select Answer
+        function selectAnswer(e) {
+            const selectedOption = e.currentTarget;
+            const selectedIndex = parseInt(selectedOption.getAttribute('data-index'));
+            
+            // Clear previous selection
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Mark selected option
+            selectedOption.classList.add('selected');
+            
+            // Store user answer
+            userAnswers[currentQuestionIndex] = selectedIndex;
+        }
+
+        // Show Next Question
+        function showNextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert("Sila pilih jawapan sebelum meneruskan.");
+                return;
+            }
+            
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        // Submit Quiz
+        function submitQuiz() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert("Sila pilih jawapan sebelum menghantar.");
+                return;
+            }
+            
+            // Calculate score
+            score = 0;
+            let resultHTML = `<h3>Keputusan Ujian</h3>`;
+            
+            currentQuiz.questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.answer;
+                
+                if (isCorrect) {
+                    score++;
+                }
+                
+                resultHTML += `
+                    <div class="question-result">
+                        <p><strong>Soalan ${index + 1}:</strong> ${question.question}</p>
+                        <p><strong>Jawapan Anda:</strong> ${question.options[userAnswer]} 
+                        ${isCorrect ? '✅' : '❌'}</p>
+                        ${!isCorrect ? `<p><strong>Jawapan Betul:</strong> ${question.options[question.answer]}</p>` : ''}
+                        <p><strong>Penjelasan:</strong> ${question.explanation}</p>
+                        <hr>
+                    </div>
+                `;
+            });
+            
+            const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+            resultHTML = `
+                <div class="${percentage >= 70 ? 'result-success' : 'result-failure'}">
+                    <h4>Anda telah menjawab ${score} daripada ${currentQuiz.questions.length} soalan dengan betul (${percentage}%)</h4>
+                    ${percentage >= 70 ? 
+                        '<p>Tahniah! Anda menunjukkan kefahaman yang baik tentang topik ini.</p>' : 
+                        '<p>Anda mungkin perlu mengulangi beberapa topik. Jangan risau, teruskan usaha!</p>'}
+                </div>
+                ${resultHTML}
+            `;
+            
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.style.display = "block";
+            
+            // Hide submit button
+            submitQuizBtn.style.display = "none";
+            
+            // Update quiz progress in sidebar
+            updateQuizProgress(100);
+            
+            // Add quiz result to chat
+            setTimeout(() => {
+                addBotMessage(`Anda telah menyelesaikan ujian untuk ${currentQuiz.title} dengan skor ${score}/${currentQuiz.questions.length}. ${percentage >= 70 ? 'Tahniah!' : 'Cuba lagi!'}`);
+            }, 500);
+        }
+
+        // Update Quiz Progress
+        function updateQuizProgress(percent) {
+            quizProgressBar.style.width = `${percent}%`;
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === quizModal) {
+                closeQuizModal();
+            }
+        });
+
+        // Make quiz functions available globally
+        window.showQuizModal = showQuizModal;
+
+        // Enhanced knowledge base for SPM Computer Science
+        const knowledgeBase = {
+            // Tingkatan 4
+            t4c1: {
+                title: "Bab 1: Pengaturcaraan",
+                topics: {
+                    "Strategi Penyelesaian Masalah": {
+                        content: `
+                            <p><strong>Strategi penyelesaian masalah</strong> dalam pengaturcaraan adalah pendekatan sistematik untuk membangunkan penyelesaian perisian:</p>
+                            <ol>
+                                <li><strong>Analisis masalah</strong> - Memahami keperluan dan spesifikasi</li>
+                                <li><strong>Reka bentuk penyelesaian</strong> - Membuat algoritma dan pseudokod</li>
+                                <li><strong>Penulisan kod</strong> - Mengimplementasikan penyelesaian dalam bahasa pengaturcaraan</li>
+                                <li><strong>Pengujian dan penyahpepijat</strong> - Mengesan dan membetulkan ralat</li>
+                                <li><strong>Dokumentasi</strong> - Merekod maklumat tentang program</li>
+                            </ol>
+                            <p><strong>Contoh:</strong> Untuk membangunkan sistem pengiraan gred, kita perlu menganalisis kaedah pengiraan, mereka bentuk aliran kerja, menulis kod, menguji dengan pelbagai input, dan mendokumentasikan sistem.</p>
+                        `,
+                        examples: [
+                            "Bincangkan langkah-langkah untuk menyelesaikan masalah pengiraan purata markah pelajar.",
+                            "Mengapa dokumentasi penting dalam pengaturcaraan?"
+                        ]
+                    },
+                    "Algoritma": {
+                        content: `
+                            <p><strong>Algoritma</strong> ialah set langkah-langkah teratur untuk menyelesaikan masalah. Ciri-ciri algoritma yang baik:</p>
+                            <ul>
+                                <li>Mempunyai permulaan dan pengakhiran yang jelas</li>
+                                <li>Langkah-langkah terhingga (finite)</li>
+                                <li>Tidak ambigu (setiap langkah jelas)</li>
+                                <li>Berkesan (boleh dilaksanakan)</li>
+                                <li>Bebas daripada bahasa pengaturcaraan tertentu</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <span class="code-comment">// Contoh algoritma untuk mencari nombor terbesar antara 3 nombor</span><br>
+                                1. Mula<br>
+                                2. Baca tiga nombor: num1, num2, num3<br>
+                                3. Jika num1 > num2 dan num1 > num3, maka papar num1<br>
+                                4. Jika tidak, jika num2 > num3, maka papar num2<br>
+                                5. Jika tidak, papar num3<br>
+                                6. Tamat
+                            </div>
+                        `,
+                        examples: [
+                            "Bina algoritma untuk menentukan sama ada nombor genap atau ganjil.",
+                            "Apakah perbezaan antara algoritma dan pseudokod?"
+                        ]
+                    },
+                    "Pemboleh Ubah, Pemalar dan Jenis Data": {
+                        content: `
+                            <p><strong>Pemboleh ubah</strong>: Lokasi storan yang boleh berubah nilai semasa program dilaksanakan.</p>
+                            <p><strong>Pemalar</strong>: Nilai yang tetap sepanjang pelaksanaan program.</p>
+                            
+                            <p><strong>Jenis data asas</strong>:</p>
+                            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                                <tr style="background-color: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Jenis Data</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Penerangan</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Contoh</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Integer</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Nombor bulat</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">5, -3, 0</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Float/Double</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Nombor perpuluhan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">3.14, -0.5</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Boolean</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Nilai benar/palsu</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">true, false</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Char</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Satu aksara</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">'A', '5', '$'</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">String</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Jujukan aksara</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">"Hello", "SPM2024"</td>
+                                </tr>
+                            </table>
+                            
+                            <p><strong>Contoh dalam C++:</strong></p>
+                            <div class="code-block">
+                                <span class="code-keyword">int</span> umur = <span class="code-number">18</span>; <span class="code-comment">// Pemboleh ubah integer</span><br>
+                                <span class="code-keyword">const float</span> PI = <span class="code-number">3.14159</span>; <span class="code-comment">// Pemalar float</span><br>
+                                <span class="code-keyword">char</span> grade = <span class="code-string">'A'</span>; <span class="code-comment">// Pemboleh ubah char</span><br>
+                                <span class="code-keyword">string</span> nama = <span class="code-string">"Ali bin Ahmad"</span>; <span class="code-comment">// Pemboleh ubah string</span><br>
+                                <span class="code-keyword">bool</span> lulus = <span class="code-keyword">true</span>; <span class="code-comment">// Pemboleh ubah boolean</span>
+                            </div>
+                        `,
+                        examples: [
+                            "Apakah perbezaan antara pemboleh ubah dan pemalar?",
+                            "Berikan contoh penggunaan jenis data boolean dalam program."
+                        ]
+                    },
+                    "Struktur Kawalan": {
+                        content: `
+                            <p>3 jenis struktur kawalan dalam pengaturcaraan:</p>
+                            
+                            <p><strong>1. Jujukan</strong>: Arahan dilaksanakan secara berurutan dari atas ke bawah.</p>
+                            
+                            <p><strong>2. Pemilihan</strong>: Melaksanakan blok kod berdasarkan syarat:</p>
+                            <ul>
+                                <li><code>if</code> - Melaksanakan kod jika syarat benar</li>
+                                <li><code>if-else</code> - Memilih antara dua blok kod</li>
+                                <li><code>switch-case</code> - Memilih antara banyak blok kod berdasarkan nilai</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <span class="code-comment">// Contoh if-else dalam C++</span><br>
+                                <span class="code-keyword">if</span> (markah >= <span class="code-number">50</span>) {<br>
+                                &nbsp;&nbsp;cout << <span class="code-string">"Lulus"</span>;<br>
+                                } <span class="code-keyword">else</span> {<br>
+                                &nbsp;&nbsp;cout << <span class="code-string">"Gagal"</span>;<br>
+                                }
+                            </div>
+                            
+                            <p><strong>3. Pengulangan</strong>: Mengulang blok kod sehingga syarat dipenuhi:</p>
+                            <ul>
+                                <li><code>for</code> - Ulang dengan kawalan bilangan ulangan</li>
+                                <li><code>while</code> - Ulang selagi syarat benar</li>
+                                <li><code>do-while</code> - Ulang sekurang-kurangnya sekali, kemudian ulang selagi syarat benar</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <span class="code-comment">// Contoh for loop dalam C++</span><br>
+                                <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i <= <span class="code-number">10</span>; i++) {<br>
+                                &nbsp;&nbsp;cout << i << <span class="code-string">" "</span>;<br>
+                                }<br>
+                                <span class="code-comment">// Output: 1 2 3 4 5 6 7 8 9 10</span>
+                            </div>
+                        `,
+                        examples: [
+                            "Bina struktur kawalan untuk menentukan gred berdasarkan markah.",
+                            "Apakah perbezaan antara while dan do-while loop?"
+                        ]
+                    },
+                    "Amalan Terbaik Pengaturcaraan": {
+                        content: `
+                            <p>Amalan terbaik untuk menulis kod yang baik:</p>
+                            <ol>
+                                <li><strong>Gunakan komen yang bermakna</strong> - Terangkan logik kompleks atau tujuan fungsi</li>
+                                <li><strong>Indentasi yang konsisten</strong> - Memudahkan pembacaan struktur kod</li>
+                                <li><strong>Namakan pembolehubah dengan deskriptif</strong> - Contoh: <code>jumlahMarkah</code> bukan <code>jm</code></li>
+                                <li><strong>Elakkan kod yang berulang</strong> - Gunakan fungsi untuk kod yang digunakan berkali-kali</li>
+                                <li><strong>Uji kod secara berkala</strong> - Uji setiap bahagian kecil sebelum meneruskan</li>
+                                <li><strong>Gunakan versi kawalan</strong> - Seperti Git untuk mengesan perubahan</li>
+                                <li><strong>Pecahkan masalah besar</strong> - Kepada modul atau fungsi kecil</li>
+                                <li><strong>Tangani ralat dengan baik</strong> - Jangan anggap input sentiasa betul</li>
+                            </ol>
+                            
+                            <p><strong>Contoh Kod Baik vs Tidak Baik:</strong></p>
+                            <div class="code-block">
+                                <span class="code-comment">// Tidak baik:</span><br>
+                                <span class="code-keyword">int</span> a = <span class="code-number">5</span>;<br>
+                                <span class="code-keyword">int</span> b = <span class="code-number">10</span>;<br>
+                                <span class="code-keyword">int</span> c = a + b;<br><br>
+                                
+                                <span class="code-comment">// Lebih baik:</span><br>
+                                <span class="code-comment">// Mengira jumlah dua nombor</span><br>
+                                <span class="code-keyword">int</span> nomborPertama = <span class="code-number">5</span>;<br>
+                                <span class="code-keyword">int</span> nomborKedua = <span class="code-number">10</span>;<br>
+                                <span class="code-keyword">int</span> jumlah = nomborPertama + nomborKedua;
+                            </div>
+                        `,
+                        examples: [
+                            "Mengapa penamaan pembolehubah yang deskriptif penting?",
+                            "Berikan contoh kod dengan komen yang baik."
+                        ]
+                    },
+                    "Struktur Data dan Modular": {
+                        content: `
+                            <p><strong>Struktur Data</strong>: Cara menyusun dan menyimpan data dalam komputer:</p>
+                            <ul>
+                                <li><strong>Array</strong> - Koleksi elemen dengan jenis sama, diakses melalui indeks</li>
+                                <li><strong>Senarai Berantai (Linked List)</strong> - Elemen disambung melalui pointer</li>
+                                <li><strong>Stack</strong> - Last-In-First-Out (LIFO) struktur</li>
+                                <li><strong>Queue</strong> - First-In-First-Out (FIFO) struktur</li>
+                                <li><strong>Tree</strong> - Struktur hierarki dengan nod dan anak</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <span class="code-comment">// Contoh array dalam C++</span><br>
+                                <span class="code-keyword">int</span> markah[<span class="code-number">5</span>] = {<span class="code-number">85</span>, <span class="code-number">90</span>, <span class="code-number">78</span>, <span class="code-number">92</span>, <span class="code-number">88</span>};<br>
+                                cout << markah[<span class="code-number">2</span>]; <span class="code-comment">// Output: 78</span>
+                            </div>
+                            
+                            <p><strong>Pengaturcaraan Modular</strong>: Bahagikan program kepada fungsi/modul untuk:</p>
+                            <ul>
+                                <li>Kebolehgunaan semula kod</li>
+                                <li>Mudah penyelenggaraan</li>
+                                <li>Kerjasama berpasukan lebih mudah</li>
+                                <li>Mengasingkan tugas tertentu</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <span class="code-comment">// Contoh fungsi modular dalam C++</span><br>
+                                <span class="code-comment">// Fungsi untuk mengira purata</span><br>
+                                <span class="code-keyword">float</span> kiraPurata(<span class="code-keyword">int</span> arr[], <span class="code-keyword">int</span> saiz) {<br>
+                                &nbsp;&nbsp;<span class="code-keyword">int</span> jumlah = <span class="code-number">0</span>;<br>
+                                &nbsp;&nbsp;<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i < saiz; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;jumlah += arr[i];<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-keyword">static_cast</span>&lt;<span class="code-keyword">float</span>&gt;(jumlah) / saiz;<br>
+                                }<br><br>
+                                
+                                <span class="code-comment">// Menggunakan fungsi</span><br>
+                                <span class="code-keyword">int</span> main() {<br>
+                                &nbsp;&nbsp;<span class="code-keyword">int</span> data[] = {<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>, <span class="code-number">40</span>, <span class="code-number">50</span>};<br>
+                                &nbsp;&nbsp;cout << <span class="code-string">"Purata: "</span> << kiraPurata(data, <span class="code-number">5</span>);<br>
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-number">0</span>;<br>
+                                }
+                            </div>
+                        `,
+                        examples: [
+                            "Apakah kelebihan menggunakan array berbanding pembolehubah berasingan?",
+                            "Bina fungsi modular untuk mengira luas segi empat tepat."
+                        ]
+                    },
+                    "Pembangunan Aplikasi": {
+                        content: `
+                            <p><strong>Fasa pembangunan aplikasi</strong>:</p>
+                            <ol>
+                                <li><strong>Analisis keperluan</strong> - Memahami masalah dan keperluan pengguna</li>
+                                <li><strong>Reka bentuk</strong> - Membuat pseudokod, carta alir, dan reka bentuk antara muka</li>
+                                <li><strong>Pelaksanaan</strong> - Menulis kod sebenar berdasarkan reka bentuk</li>
+                                <li><strong>Pengujian</strong> - Mengesan dan membetulkan ralat (debugging)</li>
+                                <li><strong>Penyenggaraan</strong> - Kemaskini dan baiki selepas pelaksanaan</li>
+                            </ol>
+                            
+                            <p><strong>Model Pembangunan Perisian</strong>:</p>
+                            <ul>
+                                <li><strong>Model Air Terjun (Waterfall)</strong> - Fasa linear berurutan</li>
+                                <li><strong>Model Prototaip</strong> - Bina versi awal untuk maklum balas</li>
+                                <li><strong>Model Agile</strong> - Pembangunan berulang dan inkremental</li>
+                            </ul>
+                            
+                            <p><strong>Alatan Pembangunan</strong>:</p>
+                            <ul>
+                                <li>Persekitaran Pembangunan Bersepadu (IDE) seperti Visual Studio, Eclipse</li>
+                                <li>Alat kawalan versi seperti Git</li>
+                                <li>Alat pengujian seperti unit test frameworks</li>
+                                <li>Alat dokumentasi seperti Doxygen</li>
+                            </ul>
+                        `,
+                        examples: [
+                            "Apakah perbezaan antara model air terjun dan model agile?",
+                            "Mengapa fasa analisis keperluan penting dalam pembangunan aplikasi?"
+                        ]
+                    }
+                }
+            },
+            t4c2: {
+                title: "Bab 2: Pangkalan Data",
+                topics: {
+                    "Pangkalan Data Hubungan": {
+                        content: `
+                            <p>Pangkalan data hubungan menyimpan data dalam bentuk jadual (relation) yang terdiri daripada:</p>
+                            <ul>
+                                <li><strong>Baris (record/tuple)</strong> - Entiti tunggal dalam jadual</li>
+                                <li><strong>Lajur (attribute/field)</strong> - Ciri atau sifat entiti</li>
+                                <li><strong>Kunci Primer (Primary Key)</strong> - Pengenal unik untuk setiap rekod</li>
+                                <li><strong>Kunci Asing (Foreign Key)</strong> - Rujukan kepada kunci primer dalam jadual lain</li>
+                            </ul>
+                            
+                            <p><strong>Ciri-ciri Pangkalan Data Hubungan</strong>:</p>
+                            <ol>
+                                <li>Data disimpan dalam jadual 2-dimensi</li>
+                                <li>Setiap jadual mewakili satu entiti</li>
+                                <li>Hubungan antara jadual ditakrifkan melalui kunci</li>
+                                <li>Menggunakan SQL untuk operasi data</li>
+                                <li>Mematuhi sifat ACID (Atomicity, Consistency, Isolation, Durability)</li>
+                            </ol>
+                            
+                            <p><strong>Contoh Jadual Pelajar</strong>:</p>
+                            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                                <tr style="background-color: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd;">NoMatrik (PK)</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Nama</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Program</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Semester</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">A12345</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Ahmad bin Ali</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">CS101</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">3</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">A12346</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Siti binti Abu</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">CS101</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">2</td>
+                                </tr>
+                            </table>
+                        `,
+                        examples: [
+                            "Apakah tujuan kunci primer dalam pangkalan data hubungan?",
+                            "Berikan contoh situasi yang memerlukan kunci asing."
+                        ]
+                    },
+                    "Reka Bentuk Pangkalan Data Hubungan": {
+                        content: `
+                            <p><strong>Proses reka bentuk pangkalan data hubungan</strong>:</p>
+                            
+                            <p><strong>1. Analisis keperluan</strong>:</p>
+                            <ul>
+                                <li>Kenal pasti entiti dan atribut</li>
+                                <li>Kenal pasti hubungan antara entiti</li>
+                                <li>Tentukan kekangan perniagaan</li>
+                            </ul>
+                            
+                            <p><strong>2. Reka bentuk konseptual (ERD)</strong>:</p>
+                            <ul>
+                                <li>Gunakan Entity-Relationship Diagram (ERD)</li>
+                                <li>Tentukan entiti, atribut, dan hubungan</li>
+                                <li>Kenal pasti kardinaliti hubungan (1:1, 1:N, M:N)</li>
+                            </ul>
+                            
+                            <p><strong>3. Reka bentuk logikal (penormalan)</strong>:</p>
+                            <ul>
+                                <li>Tukar ERD kepada skema hubungan</li>
+                                <li>Lakukan penormalan untuk elakkan redundansi</li>
+                                <li>Bentuk normal biasa (1NF, 2NF, 3NF, BCNF)</li>
+                            </ul>
+                            
+                            <p><strong>4. Reka bentuk fizikal</strong>:</p>
+                            <ul>
+                                <li>Implementasi dalam DBMS tertentu</li>
+                                <li>Tentukan jenis data untuk setiap atribut</li>
+                                <li>Buat indeks untuk prestasi</li>
+                                <li>Tetapkan kekangan integriti</li>
+                            </ul>
+                            
+                            <p><strong>Contoh ERD</strong>:</p>
+                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <p style="text-align: center;"><strong>[PELAJAR]</strong> -----&lt; <strong>AMBIL</strong> &gt;----- <strong>[KURSUS]</strong></p>
+                                <p style="text-align: center;">(1 pelajar boleh ambil banyak kursus, 1 kursus boleh diambil oleh banyak pelajar)</p>
+                            </div>
+                        `,
+                        examples: [
+                            "Apakah tujuan penormalan dalam reka bentuk pangkalan data?",
+                            "Berikan contoh hubungan M:N dalam konteks sekolah."
+                        ]
+                    },
+                    "Pembangunan Pangkalan Data Hubungan": {
+                        content: `
+                            <p><strong>Langkah-langkah membangunkan pangkalan data hubungan</strong>:</p>
+                            
+                            <p><strong>1. Cipta jadual</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-keyword">CREATE TABLE</span> Pelajar (<br>
+                                &nbsp;&nbsp;NoMatrik <span class="code-keyword">VARCHAR</span>(10) <span class="code-keyword">PRIMARY KEY</span>,<br>
+                                &nbsp;&nbsp;Nama <span class="code-keyword">VARCHAR</span>(100) <span class="code-keyword">NOT NULL</span>,<br>
+                                &nbsp;&nbsp;Program <span class="code-keyword">VARCHAR</span>(10),<br>
+                                &nbsp;&nbsp;Semester <span class="code-keyword">INT</span><br>
+                                );
+                            </div>
+                            
+                            <p><strong>2. Tentukan kekangan (constraints)</strong>:</p>
+                            <ul>
+                                <li><code>PRIMARY KEY</code> - Pengenal unik</li>
+                                <li><code>FOREIGN KEY</code> - Integriti rujukan</li>
+                                <li><code>NOT NULL</code> - Nilai wajib</li>
+                                <li><code>UNIQUE</code> - Nilai unik (bukan kunci primer)</li>
+                                <li><code>CHECK</code> - Validasi nilai</li>
+                            </ul>
+                            
+                            <p><strong>3. Cipta hubungan antara jadual</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-keyword">CREATE TABLE</span> Pengambilan (<br>
+                                &nbsp;&nbsp;NoMatrik <span class="code-keyword">VARCHAR</span>(10),<br>
+                                &nbsp;&nbsp;KodKursus <span class="code-keyword">VARCHAR</span>(10),<br>
+                                &nbsp;&nbsp;Semester <span class="code-keyword">INT</span>,<br>
+                                &nbsp;&nbsp;<span class="code-keyword">PRIMARY KEY</span> (NoMatrik, KodKursus),<br>
+                                &nbsp;&nbsp;<span class="code-keyword">FOREIGN KEY</span> (NoMatrik) <span class="code-keyword">REFERENCES</span> Pelajar(NoMatrik),<br>
+                                &nbsp;&nbsp;<span class="code-keyword">FOREIGN KEY</span> (KodKursus) <span class="code-keyword">REFERENCES</span> Kursus(KodKursus)<br>
+                                );
+                            </div>
+                            
+                            <p><strong>4. Masukkan data</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-keyword">INSERT INTO</span> Pelajar <span class="code-keyword">VALUES</span><br>
+                                ('A12345', 'Ahmad bin Ali', 'CS101', 3),<br>
+                                ('A12346', 'Siti binti Abu', 'CS101', 2);
+                            </div>
+                            
+                            <p><strong>5. Cipta pertanyaan (queries)</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-comment">-- Dapatkan semua pelajar dalam program CS101</span><br>
+                                <span class="code-keyword">SELECT</span> * <span class="code-keyword">FROM</span> Pelajar<br>
+                                <span class="code-keyword">WHERE</span> Program = 'CS101';<br><br>
+                                
+                                <span class="code-comment">-- Kira bilangan pelajar setiap program</span><br>
+                                <span class="code-keyword">SELECT</span> Program, <span class="code-keyword">COUNT</span>(*) <span class="code-keyword">AS</span> BilPelajar<br>
+                                <span class="code-keyword">FROM</span> Pelajar<br>
+                                <span class="code-keyword">GROUP BY</span> Program;
+                            </div>
+                        `,
+                        examples: [
+                            "Bina pernyataan SQL untuk mencipta jadual 'Kursus' dengan medan yang sesuai.",
+                            "Apakah tujuan kekangan FOREIGN KEY dalam pangkalan data?"
+                        ]
+                    },
+                    "Pembangunan Sistem Pangkalan Data": {
+                        content: `
+                            <p><strong>Fasa pembangunan sistem pangkalan data</strong>:</p>
+                            
+                            <p><strong>1. Perancangan</strong>:</p>
+                            <ul>
+                                <li>Tentukan skop projek</li>
+                                <li>Kenal pasti stakeholder</li>
+                                <li>Rancang sumber dan jadual</li>
+                            </ul>
+                            
+                            <p><strong>2. Analisis</strong>:</p>
+                            <ul>
+                                <li>Kumpul keperluan pengguna</li>
+                                <li>Analisis proses perniagaan</li>
+                                <li>Kenal pasti entiti dan hubungan</li>
+                            </ul>
+                            
+                            <p><strong>3. Reka bentuk</strong>:</p>
+                            <ul>
+                                <li>Reka bentuk konseptual (ERD)</li>
+                                <li>Reka bentuk logikal (penormalan)</li>
+                                <li>Reka bentuk fizikal (implementasi)</li>
+                                <li>Reka bentuk antara muka pengguna</li>
+                            </ul>
+                            
+                            <p><strong>4. Pelaksanaan</strong>:</p>
+                            <ul>
+                                <li>Cipta struktur pangkalan data</li>
+                                <li>Bina antara muka pengguna</li>
+                                <li>Implementasi logik aplikasi</li>
+                                <li>Muat data awal</li>
+                            </ul>
+                            
+                            <p><strong>5. Pengujian</strong>:</p>
+                            <ul>
+                                <li>Uji fungsi asas (unit testing)</li>
+                                <li>Uji integrasi sistem</li>
+                                <li>Uji prestasi</li>
+                                <li>Uji keselamatan</li>
+                            </ul>
+                            
+                            <p><strong>6. Penyenggaraan</strong>:</p>
+                            <ul>
+                                <li>Pembetulan ralat</li>
+                                <li>Kemaskini sistem</li>
+                                <li>Optimasi prestasi</li>
+                                <li>Latihan pengguna</li>
+                            </ul>
+                            
+                            <p><strong>Alatan Pembangunan</strong>:</p>
+                            <ul>
+                                <li>DBMS: MySQL, PostgreSQL, SQL Server, Oracle</li>
+                                <li>Alat pemodelan: ERwin, MySQL Workbench, Lucidchart</li>
+                                <li>Alat pentadbiran: phpMyAdmin, pgAdmin</li>
+                                <li>Bahasa pengaturcaraan: SQL, PHP, Python, Java</li>
+                            </ul>
+                        `,
+                        examples: [
+                            "Apakah perbezaan antara reka bentuk konseptual dan reka bentuk logikal?",
+                            "Mengapa fasa pengujian penting dalam pembangunan sistem pangkalan data?"
+                        ]
+                    }
+                }
+            },
+            t4c3: {
+                title: "Bab 3: Interaksi Manusia dan Komputer",
+                topics: {
+                    "Rekabentuk Interaksi": {
+                        content: `
+                            <p><strong>Prinsip reka bentuk interaksi yang baik</strong>:</p>
+                            <ol>
+                                <li><strong>Ketekalan (Consistency)</strong> - Antara muka yang konsisten dalam operasi dan penampilan</li>
+                                <li><strong>Maklum balas (Feedback)</strong> - Sistem harus memberi maklum balas tentang status dan tindakan</li>
+                                <li><strong>Kawalan pengguna (User control)</strong> - Pengguna harus merasa mengawal sistem</li>
+                                <li><strong>Pencegahan ralat (Error prevention)</strong> - Reka bentuk yang mengurangkan peluang ralat</li>
+                                <li><strong>Kebolehgunaan (Usability)</strong> - Mudah dipelajari dan digunakan</li>
+                                <li><strong>Kebolehcapaian (Accessibility)</strong> - Boleh digunakan oleh pelbagai jenis pengguna</li>
+                                <li><strong>Fleksibiliti (Flexibility)</strong> - Menampung pelbagai tahap kemahiran pengguna</li>
+                            </ol>
+                            
+                            <p><strong>Contoh Aplikasi Prinsip</strong>:</p>
+                            <ul>
+                                <li>Butang yang kelihatan boleh diklik (ketekalan visual)</li>
+                                <li>Progress bar untuk operasi panjang (maklum balas)</li>
+                                <li>Butang 'Undo' untuk membatalkan tindakan (kawalan pengguna)</li>
+                                <li>Pengesahan sebelum memadam data (pencegahan ralat)</li>
+                                <li>Antara muka intuitif dengan ikon standard (kebolehgunaan)</li>
+                                <li>Pilihan saiz teks dan kontras warna (kebolehcapaian)</li>
+                                <li>Shortcut untuk pengguna mahir (fleksibiliti)</li>
+                            </ul>
+                        `,
+                        examples: [
+                            "Berikan contoh aplikasi prinsip maklum balas dalam antara muka web.",
+                            "Mengapa ketekalan penting dalam reka bentuk antara muka pengguna?"
+                        ]
+                    },
+                    "Paparan dan Reka Bentuk Skrin": {
+                        content: `
+                            <p><strong>Aspek penting reka bentuk skrin</strong>:</p>
+                            
+                            <p><strong>1. Susun atur yang logik</strong>:</p>
+                            <ul>
+                                <li>Gunakan grid system untuk penjajaran</li>
+                                <li>Letakkan elemen penting di lokasi strategik</li>
+                                <li>Ikuti pola bacaan semula jadi (biasanya kiri ke kanan, atas ke bawah)</li>
+                                <li>Kumpulkan maklumat berkaitan</li>
+                            </ul>
+                            
+                            <p><strong>2. Penggunaan warna yang sesuai</strong>:</p>
+                            <ul>
+                                <li>Gunakan palet warna terhad (3-5 warna utama)</li>
+                                <li>Pastikan kontras mencukupi untuk kebolehbacaan</li>
+                                <li>Gunakan warna secara konsisten (misalnya merah untuk amaran)</li>
+                                <li>Pertimbangkan buta warna dalam pemilihan warna</li>
+                            </ul>
+                            
+                            <p><strong>3. Tipografi yang jelas</strong>:</p>
+                            <ul>
+                                <li>Gunakan fon sans-serif untuk teks skrin</li>
+                                <li>Saiz fon minimum 12px untuk kebolehbacaan</li>
+                                <li>Hadkan bilangan jenis fon (2-3 fon sahaja)</li>
+                                <li>Gunakan berat fon (bold) dan gaya (italic) secara strategik</li>
+                            </ul>
+                            
+                            <p><strong>4. Navigasi yang intuitif</strong>:</p>
+                            <ul>
+                                <li>Buat menu yang konsisten di seluruh aplikasi</li>
+                                <li>Gunakan breadcrumb untuk lokasi semasa</li>
+                                <li>Sediakan laluan balik yang jelas</li>
+                                <li>Pastikan setiap halaman boleh dicapai dalam 3 klik atau kurang</li>
+                            </ul>
+                            
+                            <p><strong>5. Keseimbangan antara teks dan ruang putih</strong>:</p>
+                            <ul>
+                                <li>Gunakan ruang putih untuk mengelakkan kekacauan visual</li>
+                                <li>Pecahkan teks panjang kepada perenggan kecil</li>
+                                <li>Gunakan senarai berbulet untuk maklumat berkaitan</li>
+                                <li>Gunakan heading dan subheading untuk struktur</li>
+                            </ul>
+                            
+                            <p><strong>6. Reka bentuk responsif</strong>:</p>
+                            <ul>
+                                <li>Pastikan antara muka berfungsi pada pelbagai saiz skrin</li>
+                                <li>Gunakan media queries untuk penyesuaian layout</li>
+                                <li>Uji pada peranti sebenar</li>
+                                <li>Pertimbangkan input touch untuk peranti mudah alih</li>
+                            </ul>
+                        `,
+                        examples: [
+                            "Berikan contoh susun atur skrin yang baik untuk borang pendaftaran.",
+                            "Mengapa ruang putih penting dalam reka bentuk antara muka?"
+                        ]
+                    }
+                }
+            },
+            // Tingkatan 5
+            t5c1: {
+                title: "Bab 1: Perkomputeran",
+                topics: {
+                    "Komputer dan Impak": {
+                        content: `
+                            <p><strong>Impak komputer dalam masyarakat</strong>:</p>
+                            
+                            <p><strong>Impak Positif</strong>:</p>
+                            <ol>
+                                <li><strong>Peningkatan produktiviti</strong> - Automasi tugas berulang</li>
+                                <li><strong>Komunikasi global</strong> - Email, video call, media sosial</li>
+                                <li><strong>Akses maklumat</strong> - Internet menyediakan pengetahuan luas</li>
+                                <li><strong>Pendidikan</strong> - ePembelajaran dan sumber pendidikan dalam talian</li>
+                                <li><strong>Kesihatan</strong> - Rekod perubatan elektronik, diagnosis bantuan komputer</li>
+                                <li><strong>Kecekapan tenaga</strong> - Sistem kawalan pintar untuk penjimatan tenaga</li>
+                            </ol>
+                            
+                            <p><strong>Impak Negatif</strong>:</p>
+                            <ol>
+                                <li><strong>Ketagihan</strong> - Penggunaan berlebihan peranti digital</li>
+                                <li><strong>Privasi data</strong> - Risiko kebocoran maklumat peribadi</li>
+                                <li><strong>Pengangguran teknologi</strong> - Penggantian pekerjaan oleh automasi</li>
+                                <li><strong>Kesihatan fizikal</strong> - Masalah postur, penglihatan dari penggunaan lama</li>
+                                <li><strong>Kesenjangan digital</strong> - Jurang antara yang mempunyai akses teknologi dan tidak</li>
+                                <li><strong>Jenayah siber</strong> - Penipuan, pencurian identiti, serangan siber</li>
+                            </ol>
+                            
+                            <p><strong>Etika Pengkomputeran</strong>:</p>
+                            <ul>
+                                <li>Hak cipta dan lesen perisian</li>
+                                <li>Privasi dan perlindungan data</li>
+                                <li>Tanggungjawab profesional</li>
+                                <li>Keselamatan maklumat</li>
+                                <li>Keseimbangan kehidupan-digital</li>
+                            </ul>
+                        `,
+                        examples: [
+                            "Bagaimana komputer telah mengubah cara kita bekerja?",
+                            "Apakah langkah-langkah untuk mengurangkan impak negatif penggunaan komputer?"
+                        ]
+                    },
+                    "Seni bina komputer": {
+                        content: `
+                            <p><strong>Komponen utama seni bina komputer</strong>:</p>
+                            
+                            <p><strong>1. Unit Pemprosesan Pusat (CPU)</strong>:</p>
+                            <ul>
+                                <li>Otak komputer yang melaksanakan arahan</li>
+                                <li>Terdiri daripada:
+                                    <ul>
+                                        <li>Unit kawalan (CU) - Mengawal aliran data</li>
+                                        <li>Unit logik aritmetik (ALU) - Melaksanakan pengiraan</li>
+                                        <li>Register - Stor sementara pantas</li>
+                                    </ul>
+                                </li>
+                                <li>Kelajuan diukur dalam Hertz (GHz)</li>
+                            </ul>
+                            
+                            <p><strong>2. Ingatan (Memory)</strong>:</p>
+                            <ul>
+                                <li><strong>RAM</strong> (Random Access Memory) - Stor sementara untuk data aktif, pantas tetapi tidak kekal</li>
+                                <li><strong>ROM</strong> (Read Only Memory) - Stor kekal untuk firmware, tidak boleh diubah</li>
+                                <li>Cache Memory - Sangat pantas, menyimpan data yang kerap digunakan</li>
+                            </ul>
+                            
+                            <p><strong>3. Peranti Input/Output</strong>:</p>
+                            <ul>
+                                <li><strong>Input</strong>: Papan kekunci, tetikus, skrin sentuh, pengimbas, mikrofon</li>
+                                <li><strong>Output</strong>: Monitor, pencetak, pembesar suara, projektor</li>
+                                <li><strong>Input/Output</strong>: Cakera keras, SSD, flash drive, kad rangkaian</li>
+                            </ul>
+                            
+                            <p><strong>4. Storan Sekunder</strong>:</p>
+                            <ul>
+                                <li><strong>HDD</strong> (Hard Disk Drive) - Stor magnetik, kapasiti besar, harga rendah</li>
+                                <li><strong>SSD</strong> (Solid State Drive) - Stor flash, lebih pantas, lebih tahan lasak</li>
+                                <li>Optical Storage - CD, DVD, Blu-ray</li>
+                                <li>Cloud Storage - Stor dalam talian seperti Google Drive, Dropbox</li>
+                            </ul>
+                            
+                            <p><strong>Kitaran Fetch-Decode-Execute</strong>:</p>
+                            <ol>
+                                <li><strong>Fetch</strong> - Ambil arahan dari memori</li>
+                                <li><strong>Decode</strong> - Tafsir arahan</li>
+                                <li><strong>Execute</strong> - Laksanakan arahan</li>
+                                <li><strong>Store</strong> - Simpan hasil (jika ada)</li>
+                                <li>Ulangi untuk arahan seterusnya</li>
+                            </ol>
+                            
+                            <p><strong>Seni Bina von Neumann vs Harvard</strong>:</p>
+                            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                                <tr style="background-color: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Aspek</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">von Neumann</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Harvard</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Struktur Memori</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Satu memori untuk data dan arahan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Memori berasingan untuk data dan arahan</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Kelajuan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Lebih perlahan (bottleneck)</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Lebih pantas (akses selari)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Kerumitan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Lebih mudah dilaksanakan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Lebih kompleks</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Penggunaan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Komputer am</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Pemproses isyarat digital, mikropengawal</td>
+                                </tr>
+                            </table>
+                        `,
+                        examples: [
+                            "Apakah perbezaan antara RAM dan ROM?",
+                            "Mengapa SSD lebih pantas daripada HDD?"
+                        ]
+                    },
+                    "Get Logik": {
+                        content: `
+                            <p><strong>Get logik</strong> adalah litar elektronik asas yang melaksanakan operasi logik Boolean. Get logik digunakan untuk membina litar digital dan membuat keputusan dalam pemprosesan komputer.</p>
+                            
+                            <p><strong>Jenis get logik asas</strong>:</p>
+                            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                                <tr style="background-color: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Get Logik</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Simbol</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Jadual Kebenaran</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Penerangan</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">AND</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">&</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | B | Q<br>
+                                        0 | 0 | 0<br>
+                                        0 | 1 | 0<br>
+                                        1 | 0 | 0<br>
+                                        1 | 1 | 1
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Output 1 jika semua input 1</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">OR</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">≥1</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | B | Q<br>
+                                        0 | 0 | 0<br>
+                                        0 | 1 | 1<br>
+                                        1 | 0 | 1<br>
+                                        1 | 1 | 1
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Output 1 jika mana-mana input 1</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">NOT</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">1</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | Q<br>
+                                        0 | 1<br>
+                                        1 | 0
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Membalikkan input (inverter)</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">NAND</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">&</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | B | Q<br>
+                                        0 | 0 | 1<br>
+                                        0 | 1 | 1<br>
+                                        1 | 0 | 1<br>
+                                        1 | 1 | 0
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">NOT + AND, output 0 jika semua input 1</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">NOR</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">≥1</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | B | Q<br>
+                                        0 | 0 | 1<br>
+                                        0 | 1 | 0<br>
+                                        1 | 0 | 0<br>
+                                        1 | 1 | 0
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">NOT + OR, output 1 jika semua input 0</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">XOR</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">=1</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">
+                                        A | B | Q<br>
+                                        0 | 0 | 0<br>
+                                        0 | 1 | 1<br>
+                                        1 | 0 | 1<br>
+                                        1 | 1 | 0
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Output 1 jika input berbeza</td>
+                                </tr>
+                            </table>
+                            
+                            <p><strong>Hukum Boolean</strong>:</p>
+                            <ul>
+                                <li><strong>Hukum Komutatif</strong>: A + B = B + A; A • B = B • A</li>
+                                <li><strong>Hukum Asosiatif</strong>: (A + B) + C = A + (B + C); (A • B) • C = A • (B • C)</li>
+                                <li><strong>Hukum Distributif</strong>: A • (B + C) = (A • B) + (A • C); A + (B • C) = (A + B) • (A + C)</li>
+                                <li><strong>Hukum Identiti</strong>: A + 0 = A; A • 1 = A</li>
+                                <li><strong>Hukum Negasi</strong>: A + A' = 1; A • A' = 0</li>
+                                <li><strong>Hukum De Morgan</strong>: (A + B)' = A' • B'; (A • B)' = A' + B'</li>
+                            </ul>
+                            
+                            <p><strong>Contoh Litar Get Logik</strong>:</p>
+                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <p><strong>Litar Penggera Rumah</strong>:</p>
+                                <p>Output = (Sensor Pintu OR Sensor Tingkap) AND (Tombol Aktif AND NOT Kod Diberi)</p>
+                                <p>Menggunakan get OR, AND, dan NOT</p>
+                            </div>
+                        `,
+                        examples: [
+                            "Bina jadual kebenaran untuk litar (A AND B) OR (NOT C)",
+                            "Terangkan bagaimana get NAND boleh digunakan untuk membina get NOT."
+                        ]
+                    }
+                }
+            },
+            t5c2: {
+                title: "Bab 2: Pangkalan Data Lanjutan",
+                topics: {
+                    "SQL (Structured Query Language)": {
+                        content: `
+                            <p><strong>SQL</strong> (Structured Query Language) adalah bahasa piawai untuk mengurus pangkalan data hubungan. SQL digunakan untuk:</p>
+                            <ul>
+                                <li>Mencipta dan memodifikasi struktur pangkalan data</li>
+                                <li>Memasukkan, mengemaskini, dan memadam data</li>
+                                <li>Mengambil data dengan pertanyaan kompleks</li>
+                                <li>Mengawal akses kepada data</li>
+                            </ul>
+                            
+                            <p><strong>Kategori Perintah SQL</strong>:</p>
+                            <ol>
+                                <li><strong>DDL (Data Definition Language)</strong> - Mentakrif struktur pangkalan data
+                                    <ul>
+                                        <li><code>CREATE</code> - Mencipta objek (jadual, pandangan, indeks)</li>
+                                        <li><code>ALTER</code> - Mengubah struktur objek</li>
+                                        <li><code>DROP</code> - Memadam objek</li>
+                                        <li><code>TRUNCATE</code> - Mengosongkan jadual tetapi mengekalkan struktur</li>
+                                    </ul>
+                                </li>
+                                <li><strong>DML (Data Manipulation Language)</strong> - Mengurus data dalam jadual
+                                    <ul>
+                                        <li><code>SELECT</code> - Mengambil data</li>
+                                        <li><code>INSERT</code> - Menambah rekod baru</li>
+                                        <li><code>UPDATE</code> - Mengemaskini data</li>
+                                        <li><code>DELETE</code> - Memadam rekod</li>
+                                    </ul>
+                                </li>
+                                <li><strong>DCL (Data Control Language)</strong> - Mengawal akses data
+                                    <ul>
+                                        <li><code>GRANT</code> - Memberi keizinan</li>
+                                        <li><code>REVOKE</code> - Menarik balik keizinan</li>
+                                    </ul>
+                                </li>
+                                <li><strong>TCL (Transaction Control Language)</strong> - Mengurus transaksi
+                                    <ul>
+                                        <li><code>COMMIT</code> - Menyimpan perubahan</li>
+                                        <li><code>ROLLBACK</code> - Membatalkan perubahan</li>
+                                        <li><code>SAVEPOINT</code> - Titik simpan dalam transaksi</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            
+                            <p><strong>Contoh Perintah SQL</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-comment">-- DDL: Cipta jadual Pelajar</span><br>
+                                <span class="code-keyword">CREATE TABLE</span> Pelajar (<br>
+                                &nbsp;&nbsp;NoMatrik <span class="code-keyword">VARCHAR</span>(10) <span class="code-keyword">PRIMARY KEY</span>,<br>
+                                &nbsp;&nbsp;Nama <span class="code-keyword">VARCHAR</span>(100) <span class="code-keyword">NOT NULL</span>,<br>
+                                &nbsp;&nbsp;Program <span class="code-keyword">VARCHAR</span>(10),<br>
+                                &nbsp;&nbsp;Semester <span class="code-keyword">INT</span> <span class="code-keyword">CHECK</span> (Semester BETWEEN 1 AND 8)<br>
+                                );<br><br>
+                                
+                                <span class="code-comment">-- DML: Masukkan data</span><br>
+                                <span class="code-keyword">INSERT INTO</span> Pelajar <span class="code-keyword">VALUES</span><br>
+                                ('A12345', 'Ahmad bin Ali', 'CS101', 3),<br>
+                                ('A12346', 'Siti binti Abu', 'CS101', 2);<br><br>
+                                
+                                <span class="code-comment">-- DML: Pilih data dengan syarat</span><br>
+                                <span class="code-keyword">SELECT</span> NoMatrik, Nama <span class="code-keyword">FROM</span> Pelajar<br>
+                                <span class="code-keyword">WHERE</span> Program = 'CS101' <span class="code-keyword">AND</span> Semester >= 2<br>
+                                <span class="code-keyword">ORDER BY</span> Nama;<br><br>
+                                
+                                <span class="code-comment">-- DML: Kemaskini data</span><br>
+                                <span class="code-keyword">UPDATE</span> Pelajar<br>
+                                <span class="code-keyword">SET</span> Semester = Semester + 1<br>
+                                <span class="code-keyword">WHERE</span> Program = 'CS101';<br><br>
+                                
+                                <span class="code-comment">-- DML: Gabungan jadual (JOIN)</span><br>
+                                <span class="code-keyword">SELECT</span> p.Nama, k.NamaKursus<br>
+                                <span class="code-keyword">FROM</span> Pelajar p<br>
+                                <span class="code-keyword">JOIN</span> Pengambilan pg <span class="code-keyword">ON</span> p.NoMatrik = pg.NoMatrik<br>
+                                <span class="code-keyword">JOIN</span> Kursus k <span class="code-keyword">ON</span> pg.KodKursus = k.KodKursus;<br><br>
+                                
+                                <span class="code-comment">-- Fungsi Agregat</span><br>
+                                <span class="code-keyword">SELECT</span> Program, <span class="code-keyword">COUNT</span>(*) <span class="code-keyword">AS</span> BilPelajar<br>
+                                <span class="code-keyword">FROM</span> Pelajar<br>
+                                <span class="code-keyword">GROUP BY</span> Program<br>
+                                <span class="code-keyword">HAVING</span> <span class="code-keyword">COUNT</span>(*) > 5;<br><br>
+                                
+                                <span class="code-comment">-- Subquery</span><br>
+                                <span class="code-keyword">SELECT</span> Nama <span class="code-keyword">FROM</span> Pelajar<br>
+                                <span class="code-keyword">WHERE</span> NoMatrik <span class="code-keyword">IN</span> (<br>
+                                &nbsp;&nbsp;<span class="code-keyword">SELECT</span> NoMatrik <span class="code-keyword">FROM</span> Pengambilan<br>
+                                &nbsp;&nbsp;<span class="code-keyword">WHERE</span> KodKursus = 'CS201'<br>
+                                );
+                            </div>
+                            
+                            <p><strong>Normalisasi Pangkalan Data</strong>:</p>
+                            <ol>
+                                <li><strong>Bentuk Normal Pertama (1NF)</strong>:
+                                    <ul>
+                                        <li>Tiada jadual berulang</li>
+                                        <li>Setiap sel mengandungi nilai atomik (tidak boleh dibahagi)</li>
+                                        <li>Setiap rekod unik (mempunyai kunci primer)</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Bentuk Normal Kedua (2NF)</strong>:
+                                    <ul>
+                                        <li>Memenuhi 1NF</li>
+                                        <li>Semua atribut bukan kunci bergantung sepenuhnya pada kunci primer</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Bentuk Normal Ketiga (3NF)</strong>:
+                                    <ul>
+                                        <li>Memenuhi 2NF</li>
+                                        <li>Tidak ada ketergantungan transitif (atribut bukan kunci tidak bergantung pada atribut bukan kunci lain)</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Bentuk Normal Boyce-Codd (BCNF)</strong>:
+                                    <ul>
+                                        <li>Versi lebih kuat dari 3NF</li>
+                                        <li>Setiap penentu adalah kunci calon (superkey)</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        `,
+                        examples: [
+                            "Tulis pernyataan SQL untuk mencari pelajar dengan markah tertinggi dalam setiap kursus.",
+                            "Apakah tujuan normalisasi pangkalan data?"
+                        ]
+                    }
+                }
+            },
+            t5c3: {
+                title: "Bab 3: Pengaturcaraan Berasaskan Web",
+                topics: {
+                    "Bahasa Penskripan Klien (Client Side Scripting Language)": {
+                        content: `
+                            <p><strong>Bahasa penskripan klien</strong> dilaksanakan pada pelayar web pengguna. Contoh utama adalah JavaScript.</p>
+                            
+                            <p><strong>Ciri-ciri</strong>:</p>
+                            <ul>
+                                <li>Dilaksanakan pada pelayar (browser)</li>
+                                <li>Tidak memerlukan komunikasi dengan pelayan untuk setiap tindakan</li>
+                                <li>Meningkatkan interaktiviti antara muka</li>
+                                <li>Boleh mengakses dan memanipulasi DOM (Document Object Model)</li>
+                                <li>Pantas kerana tiada latensi rangkaian</li>
+                                <li>Kod sumber boleh dilihat oleh pengguna</li>
+                            </ul>
+                            
+                            <p><strong>Kegunaan</strong>:</p>
+                            <ol>
+                                <li>Pengesahan borang sebelum penghantaran</li>
+                                <li>Animasi dan kesan visual</li>
+                                <li>Kemaskini kandungan tanpa muat semula halaman (AJAX)</li>
+                                <li>Interaksi pengguna seperti hover, klik, drag-and-drop</li>
+                                <li>Penyimpanan data tempatan (localStorage, cookies)</li>
+                                <li>Pemprosesan data pada klien</li>
+                            </ol>
+                            
+                            <p><strong>Contoh JavaScript</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-comment">// Pengesahan borang</span><br>
+                                <span class="code-keyword">function</span> validateForm() {<br>
+                                &nbsp;&nbsp;<span class="code-keyword">let</span> email = document.getElementById('email').value;<br>
+                                &nbsp;&nbsp;<span class="code-keyword">if</span> (email.indexOf('@') == -1) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;alert('Sila masukkan email yang sah');<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-keyword">false</span>;<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-keyword">true</span>;<br>
+                                }<br><br>
+                                
+                                <span class="code-comment">// Event listener untuk butang</span><br>
+                                document.getElementById('myButton').addEventListener('click', <span class="code-keyword">function</span>() {<br>
+                                                                <span class="code-comment">// Event listener untuk butang</span><br>
+                                document.getElementById('myButton').addEventListener('click', function() {
+                                    alert('Butang diklik!');
+                                });<br><br>
+                                
+                                <span class="code-comment">// Manipulasi DOM</span><br>
+                                let heading = document.createElement('h1');
+                                heading.textContent = 'Selamat Datang';
+                                document.body.appendChild(heading);
+                            </div>
+                            
+                            <p><strong>Perbandingan Client-side vs Server-side Scripting</strong>:</p>
+                            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                                <tr style="background-color: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Aspek</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Client-side</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd;">Server-side</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Pelaksanaan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Pelayar web</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Pelayan web</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Contoh Bahasa</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">JavaScript</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">PHP, Python, Java</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Kelebihan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Interaktif, cepat respons</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Akses data, keselamatan</td>
+                                </tr>
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Kekurangan</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Kod kelihatan, terhad capaian</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Perlu muat semula halaman</td>
+                                </tr>
+                            </table>
+                        `,
+                        examples: [
+                            "Bagaimana JavaScript meningkatkan pengalaman pengguna di laman web?",
+                            "Mengapa pengesahan borang perlu dilakukan di kedua-dua client dan server?"
+                        ]
+                    },
+                    "Bahasa Penskripan Pelayan (Server Side Scripting Language)": {
+                        content: `
+                            <p><strong>Bahasa penskripan pelayan</strong> dilaksanakan pada pelayan web sebelum halaman dihantar ke pelayar. Contoh termasuk PHP, Python (Django, Flask), Ruby on Rails, ASP.NET, dan Node.js.</p>
+                            
+                            <p><strong>Ciri-ciri</strong>:</p>
+                            <ul>
+                                <li>Dilaksanakan pada pelayan sebelum halaman dihantar ke klien</li>
+                                <li>Boleh mengakses pangkalan data dan fail pada pelayan</li>
+                                <li>Kod tidak kelihatan kepada pengguna (hanya output HTML)</li>
+                                <li>Lebih selamat untuk logik sensitif</li>
+                                <li>Boleh menghasilkan kandungan dinamik berdasarkan permintaan</li>
+                                <li>Mengurus sesi dan cookies</li>
+                            </ul>
+                            
+                            <p><strong>Kegunaan</strong>:</p>
+                            <ol>
+                                <li>Pemprosesan borang dan validasi data</li>
+                                <li>Akses dan kemaskini pangkalan data</li>
+                                <li>Pengurusan sesi pengguna dan log masuk</li>
+                                <li>Penjanaan kandungan dinamik</li>
+                                <li>API dan perkhidmatan web</li>
+                                <li>Pemprosesan fail dan imej</li>
+                            </ol>
+                            
+                            <p><strong>Contoh PHP</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-comment">// Sambungan ke pangkalan data</span><br>
+                                <span class="code-keyword">&lt;?php</span><br>
+                                $conn = <span class="code-keyword">new</span> mysqli('localhost', 'username', 'password', 'database');<br>
+                                <span class="code-keyword">if</span> ($conn->connect_error) {<br>
+                                &nbsp;&nbsp;die("Sambungan gagal: " . $conn->connect_error);<br>
+                                }<br><br>
+                                
+                                <span class="code-comment">// Query untuk dapatkan data</span><br>
+                                $sql = "SELECT * FROM Pelajar WHERE program='CS101'";<br>
+                                $result = $conn->query($sql);<br><br>
+                                
+                                <span class="code-keyword">if</span> ($result->num_rows > 0) {<br>
+                                &nbsp;&nbsp;<span class="code-comment">// Output data setiap baris</span><br>
+                                &nbsp;&nbsp;<span class="code-keyword">while</span>($row = $result->fetch_assoc()) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;echo "Nama: " . $row["nama"]. " - Program: " . $row["program"]. "&lt;br&gt;";<br>
+                                &nbsp;&nbsp;}<br>
+                                } <span class="code-keyword">else</span> {<br>
+                                &nbsp;&nbsp;echo "Tiada rekod ditemui";<br>
+                                }<br>
+                                $conn->close();<br>
+                                <span class="code-keyword">?&gt;</span>
+                            </div>
+                            
+                            <p><strong>Contoh Python (Flask)</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Flask, render_template<br><br>
+                                
+                                app = Flask(__name__)<br><br>
+                                
+                                <span class="code-keyword">@app.route</span>('/')<br>
+                                <span class="code-keyword">def</span> home():<br>
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> render_template('index.html')<br><br>
+                                
+                                <span class="code-keyword">@app.route</span>('/pelajar/&lt;nama&gt;')<br>
+                                <span class="code-keyword">def</span> pelajar(nama):<br>
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> f'Nama pelajar: {nama}'<br><br>
+                                
+                                <span class="code-keyword">if</span> __name__ == '__main__':<br>
+                                &nbsp;&nbsp;app.run(debug=True)
+                            </div>
+                        `,
+                        examples: [
+                            "Apakah kelebihan utama menggunakan penskripan pelayan?",
+                            "Bagaimana PHP mengendalikan data yang dihantar melalui borang HTML?"
+                        ]
+                    },
+                    "Teknologi Web Terkini": {
+                        content: `
+                            <p><strong>Teknologi web moden</strong> telah berkembang pesat untuk menampung keperluan aplikasi web yang lebih kompleks dan interaktif.</p>
+                            
+                            <p><strong>1. Single Page Applications (SPA)</strong>:</p>
+                            <ul>
+                                <li>Aplikasi web yang memuat satu halaman HTML dan mengemas kini kandungan secara dinamik</li>
+                                <li>Contoh framework: React, Angular, Vue.js</li>
+                                <li>Kelebihan: Pengalaman seperti aplikasi desktop, prestasi lebih baik</li>
+                            </ul>
+                            
+                            <p><strong>2. Progressive Web Apps (PWA)</strong>:</p>
+                            <ul>
+                                <li>Aplikasi web yang boleh berfungsi seperti aplikasi native</li>
+                                <li>Ciri: Boleh bekerja offline, push notifications, installable</li>
+                                <li>Teknologi: Service workers, Web App Manifest</li>
+                            </ul>
+                            
+                            <p><strong>3. WebAssembly (Wasm)</strong>:</p>
+                            <ul>
+                                <li>Format binary yang membolehkan kod bahasa lain (C, C++, Rust) berjalan di pelayar</li>
+                                <li>Prestasi hampir native untuk tugas intensif CPU</li>
+                                <li>Digunakan untuk aplikasi seperti editor video, permainan 3D</li>
+                            </ul>
+                            
+                            <p><strong>4. API Moden</strong>:</p>
+                            <ul>
+                                <li>WebSockets - Sambungan dua hala antara klien dan pelayan</li>
+                                <li>WebRTC - Komunikasi masa nyata untuk video/audio</li>
+                                <li>Web Components - Komponen UI boleh guna semula</li>
+                                <li>GraphQL - Alternatif kepada REST untuk API yang lebih fleksibel</li>
+                            </ul>
+                            
+                            <p><strong>5. Serverless Architecture</strong>:</p>
+                            <ul>
+                                <li>Membina aplikasi tanpa mengurus infrastruktur pelayan</li>
+                                <li>Contoh: AWS Lambda, Google Cloud Functions</li>
+                                <li>Bayar hanya untuk masa pengiraan yang digunakan</li>
+                            </ul>
+                            
+                            <p><strong>6. Jamstack</strong>:</p>
+                            <ul>
+                                <li>JavaScript, APIs, Markup</li>
+                                <li>Pembangunan web moden yang memisahkan antara muka dan backend</li>
+                                <li>Lebih pantas, lebih selamat, lebih mudah skala</li>
+                            </ul>
+                            
+                            <p><strong>Contoh React Component</strong>:</p>
+                            <div class="code-block">
+                                <span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> 'react';<br><br>
+                                
+                                <span class="code-keyword">function</span> Counter() {<br>
+                                &nbsp;&nbsp;<span class="code-keyword">const</span> [count, setCount] = useState(0);<br><br>
+                                
+                                &nbsp;&nbsp;<span class="code-keyword">return</span> (<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Anda menekan {count} kali&lt;/p&gt;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button onClick={() =&gt; setCount(count + 1)}&gt;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Klik saya<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/button&gt;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+                                &nbsp;&nbsp;);<br>
+                                }<br><br>
+                                
+                                <span class="code-keyword">export</span> <span class="code-keyword">default</span> Counter;
+                            </div>
+                        `,
+                        examples: [
+                            "Apakah kelebihan SPA berbanding laman web tradisional?",
+                            "Bagaimana PWA menyediakan pengalaman seperti aplikasi native?"
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Variables
+let currentChapter = null;
+let currentTopic = null;
+let darkMode = false;
+let learningStats = {
+    topicsLearned: 0,
+    questionsAsked: 0,
+    chaptersCompleted: 0
+};
+
+// DOM Elements
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const resetChatBtn = document.getElementById('reset-chat');
+const helpBtn = document.getElementById('help-btn');
+const chatMessages = document.getElementById('chat-messages');
+const messageContainer = document.getElementById('message-container');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const typingIndicator = document.getElementById('typing-indicator');
+const currentChapterTitle = document.getElementById('current-chapter-title');
+const progressBar = document.getElementById('progress-bar');
+const progressText = document.getElementById('progress-text');
+const topicsLearnedEl = document.getElementById('topics-learned');
+const questionsAskedEl = document.getElementById('questions-asked');
+const chaptersCompletedEl = document.getElementById('chapters-completed');
+const chatArea = document.querySelector('.chat-area');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const chatToggle = document.getElementById('chat-toggle');
+const overlay = document.getElementById('overlay');
+
+// Event Listeners
+darkModeToggle.addEventListener('click', toggleDarkMode);
+resetChatBtn.addEventListener('click', resetChat);
+helpBtn.addEventListener('click', showHelp);
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+sidebarToggle.addEventListener('click', toggleSidebar);
+chatToggle.addEventListener('click', toggleChat);
+overlay.addEventListener('click', closeMobileNav);
+
+// Initialize
+updateLearningStats();
+loadFromLocalStorage();
+
+// Functions
+function toggleDarkMode() {
+    darkMode = !darkMode;
+    document.body.classList.toggle('dark-mode', darkMode);
+    darkModeToggle.innerHTML = `<i class="fas ${darkMode ? 'fa-sun' : 'fa-moon'}"></i>`;
+    saveToLocalStorage();
+}
+
+function resetChat() {
+    if (confirm('Adakah anda pasti ingin menetapkan semula perbualan?')) {
+        messageContainer.innerHTML = '';
+        addBotMessage('Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        currentChapter = null;
+        currentTopic = null;
+        currentChapterTitle.textContent = 'AI Tutor Sains Komputer';
+        updateProgressBar();
+        saveToLocalStorage();
+    }
+}
+
+function showHelp() {
+    addBotMessage('Berikut adalah cara menggunakan AI Tutor ini:<br><br>1. Pilih bab dari menu sebelah untuk mempelajari topik tertentu<br>2. Gunakan butang "Soalan Pantas" untuk soalan lazim<br>3. Tanya soalan terus dalam kotak chat<br>4. Gunakan ikon bulan untuk mode gelap<br>5. Ikon tong sampah untuk reset chat<br><br>Anda juga boleh meminta contoh kod, penjelasan konsep, atau latihan untuk dijawab.');
+}
+
+function sendMessage() {
+    const message = userInput.value.trim();
+    if (message === '') return;
+
+    addUserMessage(message);
+    userInput.value = '';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Process message after a short delay
+    setTimeout(() => {
+        hideTypingIndicator();
+        processUserMessage(message);
+    }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
+}
+
+function addUserMessage(message) {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+        <div class="message-actions">
+            <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
+        </div>
+        ${message}
+        <div class="message-time">${timeString}</div>
+    `;
+    
+    messageContainer.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Update stats
+    learningStats.questionsAsked++;
+    updateLearningStats();
+    saveToLocalStorage();
+}
+
+function addBotMessage(message, isTopic = false) {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message bot-message ${isTopic ? 'topic-message' : ''}`;
+    messageDiv.innerHTML = `
+        <div class="message-actions">
+            <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
+        </div>
+        ${message}
+        <div class="message-time">${timeString}</div>
+    `;
+    
+    messageContainer.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Add click listeners to topic links
+    if (isTopic) {
+        setTimeout(() => {
+            const topicLinks = messageDiv.querySelectorAll('.topic-link');
+            topicLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const topic = link.getAttribute('data-topic');
+                    loadTopic(topic);
+                });
+            });
+        }, 100);
+    }
+}
+
+function showTypingIndicator() {
+    typingIndicator.style.display = 'flex';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    typingIndicator.style.display = 'none';
+}
+
+function processUserMessage(message) {
+    // Check if message is a command
+    if (message.toLowerCase() === 'help') {
+        showHelp();
+        return;
+    }
+    
+    // Check if asking for a topic
+    if (currentChapter && knowledgeBase[currentChapter]) {
+        const topics = Object.keys(knowledgeBase[currentChapter].topics);
+        const matchedTopic = topics.find(topic => 
+            message.toLowerCase().includes(topic.toLowerCase())
+        );
+        
+        if (matchedTopic) {
+            loadTopic(matchedTopic);
+            return;
+        }
+    }
+    
+    // Check if asking for quiz
+    if (message.toLowerCase().includes('kuiz') || message.toLowerCase().includes('ujian')) {
+        if (currentChapter) {
+            showQuizModal();
+        } else {
+            addBotMessage('Sila pilih bab dahulu sebelum memulakan ujian.');
+        }
+        return;
+    }
+    
+    // Default response
+    if (!currentChapter) {
+        addBotMessage('Sila pilih bab dari menu sebelah untuk memulakan pembelajaran. Atau anda boleh bertanya soalan khusus tentang Sains Komputer SPM.');
+    } else {
+        const defaultResponses = [
+            `Saya fokus pada bab ${knowledgeBase[currentChapter].title}. Anda boleh bertanya tentang topik tertentu dalam bab ini atau memilih dari menu.`,
+            `Untuk bab ini, anda boleh bertanya tentang konsep khusus atau meminta contoh. Ada soalan tertentu?`,
+            `Saya boleh membantu menjelaskan topik dalam ${knowledgeBase[currentChapter].title}. Ada yang ingin anda ketahui lebih lanjut?`
+        ];
+        const randomResponse = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        addBotMessage(randomResponse);
+    }
+}
+
+function loadChapter(chapterId) {
+    if (!knowledgeBase[chapterId]) {
+        addBotMessage('Maaf, bab ini belum tersedia.');
+        return;
+    }
+    
+    currentChapter = chapterId;
+    currentTopic = null;
+    currentChapterTitle.textContent = knowledgeBase[chapterId].title;
+    
+    // Add chapter introduction
+    addBotMessage(`Anda kini mempelajari <strong>${knowledgeBase[chapterId].title}</strong>. Berikut adalah topik-topik yang tersedia:<br><br>
+        ${Object.keys(knowledgeBase[chapterId].topics).map(topic => 
+            `<span class="topic-link" data-topic="${topic}">• ${topic}</span>`
+        ).join('<br>')}
+        <br><br>Klik pada mana-mana topik untuk mempelajarinya, atau tanya soalan khusus.`
+    , true);
+    
+    // Update progress
+    updateProgressBar();
+    saveToLocalStorage();
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 992) {
+        closeMobileNav();
+    }
+}
+
+function loadTopic(topicName) {
+    if (!currentChapter || !knowledgeBase[currentChapter] || !knowledgeBase[currentChapter].topics[topicName]) {
+        addBotMessage('Maaf, topik ini tidak ditemui.');
+        return;
+    }
+    
+    currentTopic = topicName;
+    const topic = knowledgeBase[currentChapter].topics[topicName];
+    
+    addBotMessage(`<strong>${topicName}</strong><br><br>${topic.content}`, true);
+    
+    // Add example questions if available
+    if (topic.examples && topic.examples.length > 0) {
+        addBotMessage(`<strong>Contoh Soalan:</strong><br>${topic.examples.map(q => `• "${q}"`).join('<br>')}`);
+    }
+    
+    // Update stats if this is a new topic
+    if (!topic.learned) {
+        topic.learned = true;
+        learningStats.topicsLearned++;
+        updateLearningStats();
+        updateProgressBar();
+        saveToLocalStorage();
+    }
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 992) {
+        closeMobileNav();
+    }
+}
+
+function askQuickQuestion(question) {
+    addUserMessage(question);
+    showTypingIndicator();
+    
+    setTimeout(() => {
+        hideTypingIndicator();
+        
+        // Find a relevant answer
+        let answer = '';
+        for (const chapter in knowledgeBase) {
+            for (const topic in knowledgeBase[chapter].topics) {
+                const content = knowledgeBase[chapter].topics[topic].content.toLowerCase();
+                if (question.toLowerCase().includes(topic.toLowerCase())) {
+                    answer = `<strong>${topic}</strong><br><br>${knowledgeBase[chapter].topics[topic].content}`;
+                    break;
+                }
+            }
+            if (answer) break;
+        }
+        
+        if (!answer) {
+            answer = `Soalan anda tentang "${question}". Dalam konteks Sains Komputer SPM, ini mungkin berkaitan dengan:<br><br>
+                • Pengaturcaraan dan algoritma<br>
+                • Pangkalan data dan SQL<br>
+                • Interaksi manusia dan komputer<br>
+                • Seni bina komputer dan get logik<br>
+                <br>Boleh anda perincikan soalan atau pilih bab yang berkaitan?`;
+        }
+        
+        addBotMessage(answer, true);
+    }, 1000 + Math.random() * 2000);
+}
+
+function updateLearningStats() {
+    topicsLearnedEl.textContent = learningStats.topicsLearned;
+    questionsAskedEl.textContent = learningStats.questionsAsked;
+    chaptersCompletedEl.textContent = learningStats.chaptersCompleted;
+}
+
+function updateProgressBar() {
+    if (!currentChapter) {
+        progressBar.style.width = '0%';
+        progressText.textContent = '0% selesai';
+        return;
+    }
+    
+    const chapter = knowledgeBase[currentChapter];
+    const topics = Object.keys(chapter.topics);
+    const learnedTopics = topics.filter(topic => chapter.topics[topic].learned).length;
+    const progress = Math.round((learnedTopics / topics.length) * 100);
+    
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${progress}% selesai`;
+    
+    // Check if chapter completed
+    if (progress === 100 && !chapter.completed) {
+        chapter.completed = true;
+        learningStats.chaptersCompleted++;
+        updateLearningStats();
+        addBotMessage(`Tahniah! Anda telah menyelesaikan ${chapter.title}.`);
+    }
+}
+
+function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    chatToggle.style.display = 'none';
+}
+
+function toggleChat() {
+    chatArea.classList.remove('slide-left');
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    chatToggle.style.display = 'none';
+}
+
+function closeMobileNav() {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    chatToggle.style.display = 'none';
+}
+
+function saveToLocalStorage() {
+    const data = {
+        darkMode: darkMode,
+        currentChapter: currentChapter,
+        learningStats: learningStats,
+        messages: messageContainer.innerHTML
+    };
+    localStorage.setItem('computerScienceBot', JSON.stringify(data));
+}
+
+function loadFromLocalStorage() {
+    const savedData = localStorage.getItem('computerScienceBot');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        
+        darkMode = data.darkMode;
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        learningStats = data.learningStats || learningStats;
+        updateLearningStats();
+        
+        if (data.currentChapter && knowledgeBase[data.currentChapter]) {
+            currentChapter = data.currentChapter;
+            currentChapterTitle.textContent = knowledgeBase[currentChapter].title;
+            updateProgressBar();
+        }
+        
+        if (data.messages) {
+            messageContainer.innerHTML = data.messages;
+        }
+    } else {
+        // Initial welcome message
+        addBotMessage('Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+    }
+}
+
+// Make functions available globally
+window.loadChapter = loadChapter;
+window.askQuickQuestion = askQuickQuestion;
+window.loadTopic = loadTopic;
+
+// Initialize with first chapter if in development
+if (window.location.href.includes('localhost')) {
+    loadChapter('t4c1');
+}
+    </script>
+</body>
+</html>
