@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BOT Tutor Sains Komputer SPM</title>
+    <title>BOT Sains Komputer SPM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -826,7 +826,7 @@
         .sidebar-toggle, .chat-toggle {
             display: none;
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -881,13 +881,41 @@
         .slide-in {
             animation: slideIn 0.3s forwards;
         }
+
+        @media (max-width: 992px) {
+        .sidebar.active + .chat-toggle {
+            display: block !important;
+            }
+        }
+
+        .chat-toggle {
+    background-color: var(--danger) !important; /* Warna merah untuk tombol tutup */
+    color: white;
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    font-size: 20px;
+    z-index: 90;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+}
     </style>
 </head>
 <body>
     <header>
         <div class="header-content container">
             <div>
-                <h1>BOT Tutor Sains Komputer</h1>
+                <h1><br>BOT Sains Komputer</h1>
                 <div class="subtitle"> Tingkatan 4 & 5</div>
             </div>
             <div class="user-controls">
@@ -907,6 +935,9 @@
     <div class="container">
         <div class="main-content">
             <div class="sidebar">
+                <button class="chat-toggle" id="chat-toggle" style="display: none;">
+                    <i class="fas fa-times"></i> <!-- Ganti dari fa-comments ke fa-times -->
+                </button>
                 <div class="sidebar-section">
                     <h2 class="sidebar-title"><i class="fas fa-book-open"></i> Kandungan</h2>
                     <h3 class="sidebar-title"><i class="fas fa-graduation-cap"></i> Tingkatan 4</h3>
@@ -1007,7 +1038,7 @@
             
             <div class="chat-area">
                 <div class="chat-header">
-                    <div class="chat-title" id="current-chapter-title">AI Tutor Sains Komputer</div>
+                    <div class="chat-title" id="current-chapter-title">AI Sains Komputer</div>
                     <div class="chat-actions">
                         <button class="btn-icon" id="voice-input-btn" title="Voice Input">
                             <i class="fas fa-microphone"></i>
@@ -1024,7 +1055,7 @@
                             <div class="message-actions">
                                 <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
                             </div>
-                            Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>
+                            Selamat datang ke AI Sains Komputer SPM! 👋<br><br>
                             Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>
                             • Pilih bab dari menu sebelah<br>
                             • Tanya soalan terus kepada saya<br>
@@ -1041,7 +1072,7 @@
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
-                    BOT Tutor sedang menaip...
+                    BOT sedang menaip...
                 </div>
                 
                 <div class="chat-input-container">
@@ -1070,15 +1101,11 @@
         <i class="fas fa-bars"></i>
     </button>
     
-    <button class="chat-toggle" id="chat-toggle" style="display: none;">
-        <i class="fas fa-comments"></i>
-    </button>
-    
     <!-- Overlay for sidebar -->
     <div class="overlay" id="overlay"></div>
     
     <footer>
-        &copy; 2025 BOT Tutor Sains Komputer SPM
+        &copy; 2025 BOT Sains Komputer
     </footer>
 
     <script>
@@ -1412,6 +1439,47 @@
 
         // Make quiz functions available globally
         window.showQuizModal = showQuizModal;
+
+        const casualChat = {
+  greetings: {
+    "hai": "Hai! Apa khabar? Ada apa yang boleh saya bantu hari ini? 😊",
+    "hello": "Hello there! Macam mana dengan pelajaran komputer?",
+    "assalamualaikum": "Waalaikumussalam! Mari belajar Sains Komputer bersama!",
+    "hi": "Hi! Saya bot tutor Sains Komputer. Nak tanya apa hari ini?"
+  },
+  compliments: {
+    "terbaik": "Terima kasih! Kamu pun terbaik! 😎",
+    "best": "Alahai, malu lah saya! 😊",
+    "pandai": "Saya cuma ikut programming je, kamu yang lebih pandai!"
+  },
+  smallTalk: {
+    "apa khabar": "Saya baik-baik saja! Kamu pula macam mana?",
+    "macam mana": "Alhamdulillah sistem saya berjalan lancar. Kamu?",
+    "bosan": "Jom belajar Sains Komputer! Nak saya terangkan topik mana?",
+    "seronok": "Baguslah kalau seronok! Nak teruskan belajar apa?"
+  },
+  farewells: {
+  "bye": "Jumpa lagi! Kalau ada soalan lain, saya sedia membantu 😊",
+  "selamat tinggal": "Selamat tinggal! Jangan lupa revision Sains Komputer ya!",
+  "terima kasih": "Sama-sama! Sentiasa bersedia untuk membantu kamu 👍"
+  },
+  questions: {
+    "siapa nama kamu": "Saya Bot Tutor Sains Komputer SPM!",
+    "kamu buat siapa": "Saya dibangunkan untuk membantu pelajar SPM dengan Sains Komputer",
+    "kamu robot ke": "Ya, saya program komputer tapi saya cukup bijak untuk bantu kamu belajar 😉",
+    "kamu boleh buat apa": "Saya boleh bantu kamu belajar Sains Komputer SPM, terangkan konsep, beri contoh soalan, dan banyak lagi!",
+    "siapa buat kamu": "Saya dibangunkan oleh developer untuk membantu pelajar SPM",
+    "kamu lelaki ke perempuan": "Saya cuma program komputer, tak ada jantina 😄"
+  }
+};
+
+const generalResponses = [
+  "Nak tanya apa lagi? Saya sedia membantu!",
+  "Ada topik lain yang kamu nak tahu?",
+  "Seronok berbual dengan kamu! Nak teruskan belajar?",
+  "Kalau ada soalan lain, boleh tanya saya je!",
+  "Kamu nampak berminat! Nak explore topik mana lagi?"
+];
 
         // Enhanced knowledge base for SPM Computer Science
         const knowledgeBase = {
@@ -2632,17 +2700,17 @@ function toggleDarkMode() {
 function resetChat() {
     if (confirm('Adakah anda pasti ingin menetapkan semula perbualan?')) {
         messageContainer.innerHTML = '';
-        addBotMessage('Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        addBotMessage('Selamat datang ke AI Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
         currentChapter = null;
         currentTopic = null;
-        currentChapterTitle.textContent = 'AI Tutor Sains Komputer';
+        currentChapterTitle.textContent = 'AI Sains Komputer';
         updateProgressBar();
         saveToLocalStorage();
     }
 }
 
 function showHelp() {
-    addBotMessage('Berikut adalah cara menggunakan AI Tutor ini:<br><br>1. Pilih bab dari menu sebelah untuk mempelajari topik tertentu<br>2. Gunakan butang "Soalan Pantas" untuk soalan lazim<br>3. Tanya soalan terus dalam kotak chat<br>4. Gunakan ikon bulan untuk mode gelap<br>5. Ikon tong sampah untuk reset chat<br><br>Anda juga boleh meminta contoh kod, penjelasan konsep, atau latihan untuk dijawab.');
+    addBotMessage('Berikut adalah cara menggunakan AI ini:<br><br>1. Pilih bab dari menu sebelah untuk mempelajari topik tertentu<br>2. Gunakan butang "Soalan Pantas" untuk soalan lazim<br>3. Tanya soalan terus dalam kotak chat<br>4. Gunakan ikon bulan untuk mode gelap<br>5. Ikon tong sampah untuk reset chat<br><br>Anda juga boleh meminta contoh kod, penjelasan konsep, atau latihan untuk dijawab.');
 }
 
 function sendMessage() {
@@ -2689,13 +2757,17 @@ function addBotMessage(message, isTopic = false) {
     const now = new Date();
     const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
+    // Tambahkan emoji rawak untuk membuat lebih mesra
+    const emojis = ["😊", "👍", "🤓", "👋", "💻", "📚"];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = `message bot-message ${isTopic ? 'topic-message' : ''}`;
     messageDiv.innerHTML = `
         <div class="message-actions">
             <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
         </div>
-        ${message}
+        ${message} ${randomEmoji}
         <div class="message-time">${timeString}</div>
     `;
     
@@ -2726,11 +2798,85 @@ function hideTypingIndicator() {
 }
 
 function processUserMessage(message) {
-    // Check if message is a command
-    if (message.toLowerCase() === 'help') {
-        showHelp();
-        return;
+  const lowerMsg = message.toLowerCase().trim();
+  
+  // 1. Cek command help
+  if (lowerMsg === 'help') {
+    showHelp();
+    return;
+  }
+  
+  // 2. Cek sambutan umum
+  if (casualChat.greetings[lowerMsg]) {
+    addBotMessage(casualChat.greetings[lowerMsg]);
+    return;
+  }
+  
+  // 3. Cek pujian
+  for (const [keyword, response] of Object.entries(casualChat.compliments)) {
+    if (lowerMsg.includes(keyword)) {
+      addBotMessage(response);
+      return;
     }
+  }
+  
+  // 4. Cek perpisahan
+  for (const [keyword, response] of Object.entries(casualChat.farewells)) {
+    if (lowerMsg.includes(keyword)) {
+      addBotMessage(response);
+      return;
+    }
+  }
+  
+  // 5. Cek pertanyaan umum tentang bot
+  for (const [keyword, response] of Object.entries(casualChat.questions)) {
+    if (lowerMsg.includes(keyword)) {
+      addBotMessage(response);
+      return;
+    }
+  }
+  
+  // 6. Cek small talk
+  for (const [keyword, response] of Object.entries(casualChat.smallTalk)) {
+    if (lowerMsg.includes(keyword)) {
+      addBotMessage(response);
+      return;
+    }
+  }
+  
+  // 7. Check if asking for a topic
+  if (currentChapter && knowledgeBase[currentChapter]) {
+    const topics = Object.keys(knowledgeBase[currentChapter].topics);
+    const matchedTopic = topics.find(topic => 
+      lowerMsg.includes(topic.toLowerCase())
+    );
+    
+    if (matchedTopic) {
+      loadTopic(matchedTopic);
+      return;
+    }
+  }
+  
+  // 8. Jika bukan percakapan santai, proses sebagai pertanyaan akademik
+  processAcademicQuestion(message);
+}
+
+function processAcademicQuestion(message) {
+  // Di sini letakkan logik asal anda untuk soalan Sains Komputer
+  if (!currentChapter) {
+    const randomResponse = generalResponses[Math.floor(Math.random() * generalResponses.length)];
+    addBotMessage(randomResponse);
+    return;
+  }
+  
+  // Jika ada chapter yang dipilih tetapi tidak ada topik spesifik
+  const randomResponse = `Untuk bab ${knowledgeBase[currentChapter].title}, anda boleh bertanya tentang:
+    ${Object.keys(knowledgeBase[currentChapter].topics).join(', ')}
+    
+    Atau cuba soalan khusus tentang topik ini.`;
+    
+  addBotMessage(randomResponse);
+
     
     // Check if asking for a topic
     if (currentChapter && knowledgeBase[currentChapter]) {
@@ -2894,7 +3040,13 @@ function updateProgressBar() {
 function toggleSidebar() {
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
-    chatToggle.style.display = 'none';
+    
+    // Tampilkan chat-toggle hanya ketika sidebar aktif
+    if (sidebar.classList.contains('active')) {
+        chatToggle.style.display = 'block';
+    } else {
+        chatToggle.style.display = 'none';
+    }
 }
 
 function toggleChat() {
@@ -2945,7 +3097,7 @@ function loadFromLocalStorage() {
         }
     } else {
         // Initial welcome message
-        addBotMessage('Selamat datang ke AI Tutor Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        addBotMessage('Selamat datang ke AI Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
     }
 }
 
