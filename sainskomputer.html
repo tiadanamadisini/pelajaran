@@ -1038,7 +1038,7 @@
             
             <div class="chat-area">
                 <div class="chat-header">
-                    <div class="chat-title" id="current-chapter-title">AI Sains Komputer</div>
+                    <div class="chat-title" id="current-chapter-title">Bot Sains Komputer</div>
                 </div>
                 
                 <div class="chat-messages" id="chat-messages">
@@ -1047,7 +1047,7 @@
                             <div class="message-actions">
                                 <button class="message-action" title="Copy"><i class="fas fa-copy"></i></button>
                             </div>
-                            Selamat datang ke AI Sains Komputer SPM! 👋<br><br>
+                            Selamat datang ke Bot Sains Komputer! 👋<br><br>
                             Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>
                             • Pilih bab dari menu sebelah<br>
                             • Tanya soalan terus kepada saya<br>
@@ -2710,10 +2710,10 @@ function toggleDarkMode() {
 function resetChat() {
     if (confirm('Adakah anda pasti ingin menetapkan semula perbualan?')) {
         messageContainer.innerHTML = '';
-        addBotMessage('Selamat datang ke AI Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        addBotMessage('Selamat datang ke Bot Sains Komputer! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan Buku Teks Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
         currentChapter = null;
         currentTopic = null;
-        currentChapterTitle.textContent = 'AI Sains Komputer';
+        currentChapterTitle.textContent = 'Sains Komputer';
         updateProgressBar();
         saveToLocalStorage();
     }
@@ -3107,7 +3107,7 @@ function loadFromLocalStorage() {
         }
     } else {
         // Initial welcome message
-        addBotMessage('Selamat datang ke AI Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        addBotMessage('Selamat datang ke Sains Komputer SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Sains Komputer berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
     }
 }
 
