@@ -1375,6 +1375,7 @@
                     </button>
                 </div>
                 <p style="font-size: 10px;position: relative;top: 5px;">TIDAKLAH SEMUA JAWAPAN YANG DIBERIKAN BOT ADALAH BENAR</p>
+                <p style="font-size: 8px;position: relative;top: 5px;">*BOT INI MEMPUNYAI BATAS DATA UNTUK MEMBALAS</p>
             </div>
         </div>
     </div>
@@ -8798,10 +8799,10 @@ function askQuickQuestion(question) {
         
         if (!answer) {
             answer = `Soalan anda tentang "${question}". Dalam konteks Pembelajaran SPM, ini mungkin berkaitan dengan:<br><br>
-                • Pengaturcaraan dan algoritma<br>
-                • Pangkalan data dan SQL<br>
-                • Interaksi manusia dan komputer<br>
-                • Seni bina komputer dan get logik<br>
+                • Sains Komputer<br>
+                • Sejarah<br>
+                • Perniagaan<br>
+                • Akaun<br>
                 <br>Boleh anda perincikan soalan atau pilih bab yang berkaitan?`;
         }
         
@@ -8899,7 +8900,7 @@ function loadFromLocalStorage() {
         }
     } else {
         // Initial welcome message
-        addBotMessage('Selamat datang ke Pembelajaran SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Pembelajaran berdasarkan kurikulum KPM Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
+        addBotMessage('Selamat datang ke Pembelajaran SPM! 👋<br><br>Saya akan membantu anda memahami kandungan Pembelajaran berdasarkan dari Tingkatan 4 dan 5. Anda boleh:<br><br>• Pilih bab dari menu sebelah<br>• Tanya soalan terus kepada saya<br>• Gunakan butang "Soalan Pantas"<br><br>Mari kita mula belajar! 🚀');
     }
 }
 
