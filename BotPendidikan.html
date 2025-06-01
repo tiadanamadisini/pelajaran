@@ -881,9 +881,17 @@
         
         /* Topic links in messages */
         .topic-link {
-            color: var(--primary);
-            text-decoration: underline;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
         }
         
         /* Slide transitions */
@@ -1791,8 +1799,18 @@ const generalResponses = [
                 topics: {
                     "Strategi Penyelesaian Masalah": {
                         content: `
-                            <p><strong>Strategi penyelesaian masalah</strong> dalam pengaturcaraan adalah pendekatan sistematik untuk membangunkan penyelesaian perisian:</p>
-                            <ol>
+                            <p><strong style="color:blue;">Strategi penyelesaian masalah</strong> dalam pengaturcaraan adalah pendekatan sistematik untuk membangunkan penyelesaian perisian:</p>
+                                <br><div style="text-align:center;">
+                                  <div style="display:inline-block; border:3px solid black; border-radius:50%; width:200px; height:200px; position:relative;">
+                                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);font-size: 10px;color: blue;">Strategi Penyelesaian Masalah</div>
+                                    <div style="position:absolute;top:30%;left:10%;font-size: 10px;">Analisis masalah</div>
+                                    <div style="position:absolute;top:20%;left: 45%;font-size: 10px;">Reka bentuk penyelesaian</div>
+                                    <div style="position:absolute;top: 63%;left: 10%;font-size: 10px;">Penulisan kod</div>
+                                    <div style="position:absolute;top:60%;left: 45%;font-size: 10px;">Pengujian dan penyahpepijat</div>
+                                    <div style="position:absolute;top: 81%;left: 35%;font-size: 10px;">Dokumentasi</div>
+                                  </div>
+                                </div><br>
+                            <ol><strong style="color:blue;">Strategi penyelesaian masalah</strong>
                                 <li><strong>Analisis masalah</strong> - Memahami keperluan dan spesifikasi</li>
                                 <li><strong>Reka bentuk penyelesaian</strong> - Membuat algoritma dan pseudokod</li>
                                 <li><strong>Penulisan kod</strong> - Mengimplementasikan penyelesaian dalam bahasa pengaturcaraan</li>
