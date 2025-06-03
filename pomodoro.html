@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NexusPomo | Advanced Pomodoro System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #6C5CE7;
+      --primary-light: #8577ef;
+      --secondary: #00CEFF;
+      --dark: #2D3436;
+      --light: #F5F6FA;
+      --success: #00B894;
+      --danger: #D63031;
+      --warning: #FDCB6E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: var(--light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      padding: 2rem;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .timer-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .timer-header h1 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+    }
+
+    .timer-header p {
+      opacity: 0.8;
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+
+    .pomo-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pomo-tab {
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .pomo-tab:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .pomo-tab.active {
+      background: var(--primary);
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    }
+
+    .timer-display {
+      font-size: 6rem;
+      font-weight: 700;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      margin: 1.5rem 0;
+      transition: color 0.3s ease;
+    }
+
+    .timer-display.warning {
+      color: var(--warning);
+    }
+
+    .timer-display.danger {
+      color: var(--danger);
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .control-btn:active {
+      transform: scale(0.98);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .progress-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .progress-section h3 {
+      margin-bottom: 1rem;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .progress-box {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .task-manager h3 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .task-input-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .task-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .task-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .add-task-btn {
+      padding: 0 1.5rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .add-task-btn:hover {
+      background: var(--primary-light);
+    }
+
+    .task-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .task-item:last-child {
+      border-bottom: none;
+    }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .task-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .task-text {
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .task-text.completed {
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    .task-pomos {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
+    .task-action-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .task-action-btn:hover {
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem 0;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      .glass-card {
+        padding: 1.5rem;
+      }
+
+      .timer-display {
+        font-size: 4rem;
+      }
+
+      .pomo-tabs {
+        gap: 0.5rem;
+      }
+
+      .pomo-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .timer-controls {
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-card">
+    <div class="timer-header">
+      <h1>NEXUS POMO</h1>
+      <p>Advanced Productivity System</p>
+    </div>
+
+    <div class="pomo-tabs">
+      <div class="pomo-tab active" data-mode="pomodoro">Pomodoro</div>
+      <div class="pomo-tab" data-mode="short">Short Break</div>
+      <div class="pomo-tab" data-mode="long">Long Break</div>
+    </div>
+
+    <div class="timer-display" id="timer">25:00</div>
+
+    <div class="timer-controls">
+      <button class="control-btn" id="startBtn" title="Start">▶</button>
+      <button class="control-btn" id="pauseBtn" disabled title="Pause">⏸</button>
+      <button class="control-btn" id="resetBtn" title="Reset">↻</button>
+      <button class="control-btn" id="stopBtn" title="Stop">⏏</button>
+    </div>
+
+    <div class="progress-section">
+      <h3>Today's Progress</h3>
+      <div id="progress-container" class="progress-container">
+        <!-- Filled dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <div class="task-manager">
+      <h3>Task Manager</h3>
+      <div class="task-input-container">
+        <input id="taskInput" class="task-input" type="text" placeholder="Add new task..." autocomplete="off">
+        <button id="addTaskBtn" class="add-task-btn">Add</button>
+      </div>
+
+      <div id="taskList" class="task-list">
+        <div class="empty-state">No tasks yet. Add your first task!</div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="timerSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+
+  <script>
+    // === Timer Configuration ===
+    const timerConfig = {
+      pomodoro: 25 * 60,
+      short: 5 * 60,
+      long: 15 * 60,
+      warningThreshold: 60, // seconds
+      dangerThreshold: 10, // seconds
+      sessionsBeforeLongBreak: 4
+    };
+
+    // === DOM Elements ===
+    const timerDisplay = document.getElementById("timer");
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const progressContainer = document.getElementById("progress-container");
+    const taskInput = document.getElementById("taskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
+    const timerSound = document.getElementById("timerSound");
+    const modeTabs = document.querySelectorAll(".pomo-tab");
+
+    // === State Management ===
+    let state = {
+      currentMode: "pomodoro",
+      timeLeft: timerConfig.pomodoro,
+      timerInterval: null,
+      isRunning: false,
+      sessionsCompleted: 0,
+      progress: [],
+      tasks: [],
+      nextTaskId: 1
+    };
+
+    // === Timer Functions ===
+    function updateTimerDisplay() {
+      const minutes = String(Math.floor(state.timeLeft / 60)).padStart(2, '0');
+      const seconds = String(state.timeLeft % 60).padStart(2, '0');
+      timerDisplay.textContent = `${minutes}:${seconds}`;
+      
+      // Update timer color based on remaining time
+      timerDisplay.classList.remove("warning", "danger");
+      if (state.timeLeft <= timerConfig.dangerThreshold) {
+        timerDisplay.classList.add("danger");
+      } else if (state.timeLeft <= timerConfig.warningThreshold) {
+        timerDisplay.classList.add("warning");
+      }
+    }
+
+    function startTimer() {
+      if (!state.isRunning) {
+        state.isRunning = true;
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        
+        state.timerInterval = setInterval(() => {
+          state.timeLeft--;
+          updateTimerDisplay();
+          
+          if (state.timeLeft <= 0) {
+            timerComplete();
+          }
+        }, 1000);
+      }
+    }
+
+    function pauseTimer() {
+      if (state.isRunning) {
+        clearInterval(state.timerInterval);
+        state.isRunning = false;
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+      }
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      state.timeLeft = timerConfig[state.currentMode];
+      updateTimerDisplay();
+    }
+
+    function stopTimer() {
+      if (state.isRunning) {
+        pauseTimer();
+        markProgress("fail");
+      }
+      state.timeLeft = 0;
+      updateTimerDisplay();
+    }
+
+    function timerComplete() {
+      pauseTimer();
+      timerSound.play();
+      
+      if (state.currentMode === "pomodoro") {
+        state.sessionsCompleted++;
+        markProgress("success");
+        
+        // Determine next mode
+        const nextMode = (state.sessionsCompleted % timerConfig.sessionsBeforeLongBreak === 0) 
+          ? "long" 
+          : "short";
+        
+        switchMode(nextMode);
+        alert(`Pomodoro completed! Time for a ${nextMode === "long" ? "long" : "short"} break.`);
+      } else {
+        switchMode("pomodoro");
+        alert("Break time over! Ready for another Pomodoro?");
+      }
+    }
+
+    function switchMode(mode) {
+      state.currentMode = mode;
+      state.timeLeft = timerConfig[mode];
+      
+      // Update active tab
+      modeTabs.forEach(tab => tab.classList.remove("active"));
+      document.querySelector(`.pomo-tab[data-mode="${mode}"]`).classList.add("active");
+      
+      resetTimer();
+    }
+
+    // === Progress Tracking ===
+    function renderProgress() {
+      progressContainer.innerHTML = "";
+      
+      for (let i = 0; i < timerConfig.sessionsBeforeLongBreak; i++) {
+        const box = document.createElement("div");
+        box.className = "progress-box";
+        
+        if (state.progress[i] === "success") {
+          box.style.background = "var(--success)";
+        } else if (state.progress[i] === "fail") {
+          box.style.background = "var(--danger)";
+        } else {
+          box.style.background = "rgba(255, 255, 255, 0.1)";
+        }
+        
+        progressContainer.appendChild(box);
+      }
+    }
+
+    function markProgress(result) {
+      if (state.progress.length >= timerConfig.sessionsBeforeLongBreak) {
+        state.progress.shift();
+      }
+      state.progress.push(result);
+      renderProgress();
+    }
+
+    // === Task Management ===
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      if (!taskText) return;
+      
+      const newTask = {
+        id: state.nextTaskId++,
+        text: taskText,
+        completed: false,
+        pomodoros: 1
+      };
+      
+      state.tasks.push(newTask);
+      taskInput.value = "";
+      renderTasks();
+    }
+
+    function renderTasks() {
+      if (state.tasks.length === 0) {
+        taskList.innerHTML = '<div class="empty-state">No tasks yet. Add your first task!</div>';
+        return;
+      }
+      
+      taskList.innerHTML = "";
+      
+      state.tasks.forEach(task => {
+        const taskItem = document.createElement("div");
+        taskItem.className = "task-item";
+        taskItem.dataset.id = task.id;
+        
+        taskItem.innerHTML = `
+          <div class="task-left">
+            <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""}>
+            <span class="task-text ${task.completed ? "completed" : ""}">${task.text}</span>
+          </div>
+          <span class="task-pomos">${task.pomodoros} pomodoro${task.pomodoros !== 1 ? "s" : ""}</span>
+          <div class="task-actions">
+            <button class="task-action-btn edit-btn" title="Edit">✏️</button>
+            <button class="task-action-btn delete-btn" title="Delete">🗑️</button>
+          </div>
+        `;
+        
+        taskList.appendChild(taskItem);
+        
+        // Add event listeners
+        const checkbox = taskItem.querySelector(".task-checkbox");
+        const editBtn = taskItem.querySelector(".edit-btn");
+        const deleteBtn = taskItem.querySelector(".delete-btn");
+        const taskText = taskItem.querySelector(".task-text");
+        
+        checkbox.addEventListener("change", () => {
+          task.completed = checkbox.checked;
+          taskText.classList.toggle("completed", task.completed);
+        });
+        
+        editBtn.addEventListener("click", () => {
+          const newText = prompt("Edit task:", task.text);
+          if (newText !== null && newText.trim() !== "") {
+            task.text = newText.trim();
+            taskText.textContent = task.text;
+          }
+        });
+        
+        deleteBtn.addEventListener("click", () => {
+          if (confirm("Delete this task?")) {
+            state.tasks = state.tasks.filter(t => t.id !== task.id);
+            renderTasks();
+          }
+        });
+      });
+    }
+
+    // === Event Listeners ===
+    startBtn.addEventListener("click", startTimer);
+    pauseBtn.addEventListener("click", pauseTimer);
+    resetBtn.addEventListener("click", resetTimer);
+    stopBtn.addEventListener("click", stopTimer);
+
+    modeTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        if (!state.isRunning) {
+          switchMode(tab.dataset.mode);
+        }
+      });
+    });
+
+    addTaskBtn.addEventListener("click", addTask);
+    taskInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") addTask();
+    });
+
+    // === Initialize ===
+    updateTimerDisplay();
+    renderProgress();
+    renderTasks();
+  </script>
+</body>
+</html>
